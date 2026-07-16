@@ -1,0 +1,70 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyO/uQqcjZM0Q4peOYN8QdK/",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/LABEXP2/EXP5\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "XQl3ns3MMdF4",
+        "outputId": "9e4ac213-30fb-4b40-96ef-7cec2af33715"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Scanning 127.0.0.1\n",
+            "Port 21 is CLOSED\n",
+            "Port 22 is CLOSED\n",
+            "Port 23 is CLOSED\n",
+            "Port 80 is CLOSED\n",
+            "Port 443 is CLOSED\n"
+          ]
+        }
+      ],
+      "source": [
+        "import socket\n",
+        "host = \"127.0.0.1\"\n",
+        "ports = [21, 22, 23, 80, 443]\n",
+        "print(\"Scanning\", host)\n",
+        "for port in ports:\n",
+        "    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n",
+        "    s.settimeout(1)\n",
+        "    result = s.connect_ex((host, port))\n",
+        "    if result == 0:\n",
+        "        print(\"Port\", port, \"is OPEN\")\n",
+        "    else:\n",
+        "        print(\"Port\", port, \"is CLOSED\")\n",
+        "    s.close()"
+      ]
+    }
+  ]
+}
