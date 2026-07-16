@@ -1,0 +1,72 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMaRVWVOXs26rsgQn/xF7qe",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/LABEXP2/EXP3\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "DN7C-utFLDb7",
+        "outputId": "461998f3-ce36-48b6-c325-77e86a05a661"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Request Count\n",
+            "192.168.1.10 : 4\n",
+            "⚠ Possible DoS Attack from 192.168.1.10\n",
+            "192.168.1.20 : 2\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Sample log data\n",
+        "logs = [\n",
+        "    \"192.168.1.10\",\n",
+        "    \"192.168.1.10\",\n",
+        "    \"192.168.1.10\",\n",
+        "    \"192.168.1.10\",\n",
+        "    \"192.168.1.20\",\n",
+        "    \"192.168.1.20\"\n",
+        "]\n",
+        "count = {}\n",
+        "for ip in logs:\n",
+        "    count[ip] = count.get(ip, 0) + 1\n",
+        "print(\"Request Count\")\n",
+        "for ip in count:\n",
+        "    print(ip, \":\", count[ip])\n",
+        "    if count[ip] > 3:\n",
+        "        print(\"⚠ Possible DoS Attack from\", ip)"
+      ]
+    }
+  ]
+}
