@@ -1,0 +1,64 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOPJg6JHvOgTp6ud2xgsaC6",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/LABEXP2/EXP2\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "v9OiQN5LKAuL",
+        "outputId": "29ba69d8-0765-41dc-a8b0-1d8cacf0410a"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Checking URL: http://secure-login-bank.com\n",
+            "⚠ Phishing URL Detected!\n"
+          ]
+        }
+      ],
+      "source": [
+        "phishing_keywords = [\"login\", \"verify\", \"secure\", \"bank\", \"update\", \"free\"]\n",
+        "url = \"http://secure-login-bank.com\"\n",
+        "print(\"Checking URL:\", url)\n",
+        "found = False\n",
+        "for word in phishing_keywords:\n",
+        "    if word in url:\n",
+        "        found = True\n",
+        "if found:\n",
+        "    print(\"Phishing URL Detected!\")\n",
+        "else:\n",
+        "    print(\"Safe URL\")"
+      ]
+    }
+  ]
+}
