@@ -1,0 +1,62 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyM9RCAuXAiZga9nvrLW1W4P",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/LABEXP2/EXP1\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Cpf2H0V8IPQg",
+        "outputId": "6583d957-4ffd-4ffc-f903-65470d1646db"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Generated SHA-256 Hash: d3838eeb001cced928c387df10b388da86a07e02ada8e1de9fb9894e70dca895\n",
+            "Malware Detected!\n"
+          ]
+        }
+      ],
+      "source": [
+        "import hashlib\n",
+        "file_data = b\"This is a malware file\"\n",
+        "file_hash = hashlib.sha256(file_data).hexdigest()\n",
+        "malware_hash = hashlib.sha256(b\"This is a malware file\").hexdigest()\n",
+        "print(\"Generated SHA-256 Hash:\", file_hash)\n",
+        "if file_hash == malware_hash:\n",
+        "    print(\"Malware Detected!\")\n",
+        "else:\n",
+        "    print(\"File is Safe.\")"
+      ]
+    }
+  ]
+}
