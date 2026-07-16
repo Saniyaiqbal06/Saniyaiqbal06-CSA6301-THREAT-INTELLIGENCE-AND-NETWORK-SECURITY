@@ -1,0 +1,73 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPMpn99ghMdaZN78Xnn0lvz",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/LAB%20EXP/EXP6\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "WBkCWRpiOGe1",
+        "outputId": "fd7c02cb-ed7c-4828-bb79-98fedbef3e89"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Loaded 3 IoCs\n",
+            "ALERT: Known malicious IP found -> 2026-07-08 10:02:44 connection from 45.33.32.156\n",
+            "ALERT: Known malicious IP found -> 2026-07-08 10:04:55 connection from 203.0.113.99\n"
+          ]
+        }
+      ],
+      "source": [
+        "with open(\"ioc_list.txt\", \"w\") as f:\n",
+        "    f.write(\"45.33.32.156\\n198.51.100.23\\n203.0.113.99\\n\")\n",
+        "with open(\"sample_traffic.log\", \"w\") as f:\n",
+        "    f.write(\"2026-07-08 10:01:12 connection from 10.0.0.5\\n\")\n",
+        "    f.write(\"2026-07-08 10:02:44 connection from 45.33.32.156\\n\")\n",
+        "    f.write(\"2026-07-08 10:03:10 connection from 192.168.1.20\\n\")\n",
+        "    f.write(\"2026-07-08 10:04:55 connection from 203.0.113.99\\n\")\n",
+        "def load_iocs(filename):\n",
+        "    with open(filename) as f:\n",
+        "        return set(line.strip() for line in f if line.strip())\n",
+        "def scan_log(logfile, iocs):\n",
+        "    with open(logfile) as f:\n",
+        "        for line in f:\n",
+        "            for ip in iocs:\n",
+        "                if ip in line:\n",
+        "                    print(\"ALERT: Known malicious IP found ->\", line.strip())\n",
+        "iocs = load_iocs(\"ioc_list.txt\")\n",
+        "print(\"Loaded\", len(iocs), \"IoCs\")\n",
+        "scan_log(\"sample_traffic.log\", iocs)"
+      ]
+    }
+  ]
+}
