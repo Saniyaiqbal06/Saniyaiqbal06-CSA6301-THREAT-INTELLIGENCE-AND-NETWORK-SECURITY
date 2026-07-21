@@ -1,1 +1,61 @@
-
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyO0zaqTAPOw4JbEw04DAZnK",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/LAB%20EXP/EXP11\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Eg3M1wKGxcXn",
+        "outputId": "b690b59c-781b-4d08-fb2d-6f99ed24bc39"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Encrypted (what an eavesdropper sees): b'gAAAAABqXyyxbH2gaF0ihyHFIlzR0hDD35WryCGjphUTtfOnTkmZhJb_9mZjKhh142NblyyhXLcJzw8FEPKCfZhg0CTZoPbBQQdjWHznmuhGPdiuGghexaI='\n",
+            "Decrypted (what the receiver reads): Transfer $500 to account 12345\n"
+          ]
+        }
+      ],
+      "source": [
+        "from cryptography.fernet import Fernet\n",
+        "key = Fernet.generate_key()\n",
+        "cipher = Fernet(key)\n",
+        "message = b\"Transfer $500 to account 12345\"\n",
+        "encrypted = cipher.encrypt(message)\n",
+        "print(\"Encrypted (what an eavesdropper sees):\", encrypted)\n",
+        "decrypted = cipher.decrypt(encrypted)\n",
+        "print(\"Decrypted (what the receiver reads):\", decrypted.decode())"
+      ]
+    }
+  ]
+}
