@@ -1,0 +1,64 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOD+XQu5pzQyCz0FpUkoQhs",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/LAB%20EXP/EXP8\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "mCJXiqgrtInL",
+        "outputId": "e433d853-5f95-464e-e3af-3af4bbdb1469"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Attempting dictionary attack on stolen hash...\n",
+            "Password cracked: 'letmein'\n"
+          ]
+        }
+      ],
+      "source": [
+        "import hashlib\n",
+        "stolen_hash = hashlib.sha256(\"letmein\".encode()).hexdigest()\n",
+        "wordlist = [\"123456\", \"password\", \"admin\", \"letmein\", \"qwerty\"]\n",
+        "print(\"Attempting dictionary attack on stolen hash...\")\n",
+        "for word in wordlist:\n",
+        "  guess_hash = hashlib.sha256(word.encode()).hexdigest()\n",
+        "  if guess_hash == stolen_hash:\n",
+        "    print(f\"Password cracked: '{word}'\")\n",
+        "    break\n",
+        "else:\n",
+        "  print(\"Password not found in wordlist.\")"
+      ]
+    }
+  ]
+}
