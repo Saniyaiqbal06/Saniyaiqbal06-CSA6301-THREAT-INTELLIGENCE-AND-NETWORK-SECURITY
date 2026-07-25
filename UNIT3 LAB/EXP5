@@ -1,0 +1,88 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPyEiDq4bSWNW9tBUGKL/DI",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/UNIT3%20LAB/EXP5\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "QG83VlnAEFs6",
+        "outputId": "066d8520-3400-4225-d883-b0724ec1da42"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Brute-force detected: True | consecutive fails before lockout: 3\n",
+            "Log line classified as: security\n"
+          ]
+        }
+      ],
+      "source": [
+        "auth_log = [\n",
+        "(\"09:15\", \"login_success\"),\n",
+        "(\"09:17\", \"failed_login\"),\n",
+        "(\"09:18\", \"failed_login\"),\n",
+        "(\"09:19\", \"failed_login\"),\n",
+        "(\"09:20\", \"account_locked\"),\n",
+        "]\n",
+        "def detect_bruteforce(log, fail_threshold=3):\n",
+        "    consecutive_fails = 0\n",
+        "    for _, event in log:\n",
+        "        if event == \"failed_login\":\n",
+        "            consecutive_fails += 1\n",
+        "        elif event == \"account_locked\" and consecutive_fails >= fail_threshold:\n",
+        "            return True, consecutive_fails\n",
+        "        else:\n",
+        "            consecutive_fails = 0\n",
+        "    return False, consecutive_fails\n",
+        "\n",
+        "def classify_log_line(line):\n",
+        "    keywords = {\n",
+        "        \"firewall\": [\"blocked\", \"dropped\", \"denied\"],\n",
+        "        \"security\": [\"login\", \"locked\", \"authentication\"],\n",
+        "        \"web_server\": [\"get\", \"post\", \"http\"],\n",
+        "    }\n",
+        "    line_lower = line.lower()\n",
+        "    for category, words in keywords.items():\n",
+        "        if any(w in line_lower for w in words):\n",
+        "            return category\n",
+        "    return \"unknown\"\n",
+        "\n",
+        "detected, fails = detect_bruteforce(auth_log)\n",
+        "sample_classification = classify_log_line(\"User login failed - authentication error\")\n",
+        "print(\"Brute-force detected:\", detected, \"| consecutive fails before lockout:\",\n",
+        "      fails)\n",
+        "print(\"Log line classified as:\", sample_classification)"
+      ]
+    }
+  ]
+}
