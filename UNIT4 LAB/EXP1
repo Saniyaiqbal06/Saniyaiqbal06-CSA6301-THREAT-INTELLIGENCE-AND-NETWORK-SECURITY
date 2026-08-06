@@ -1,0 +1,92 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyM+93ftpfdeFZDv+RK0DDEw",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/UNIT4%20LAB/EXP1\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "wuw4QJwRL42w",
+        "outputId": "6abca14c-3877-45dc-fc6e-e7f9e24fb693"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "All test cases passed.\n"
+          ]
+        }
+      ],
+      "source": [
+        "def field_ok(value, rule_value):\n",
+        "    return rule_value == \"any\" or value == rule_value\n",
+        "\n",
+        "def rule_matches(packet, rule):\n",
+        "    return (\n",
+        "        field_ok(packet[\"src\"], rule[\"src\"])\n",
+        "        and field_ok(packet[\"dst\"], rule[\"dst\"])\n",
+        "        and field_ok(packet[\"port\"], rule[\"port\"])\n",
+        "        and field_ok(packet[\"proto\"], rule[\"proto\"])\n",
+        "    )\n",
+        "\n",
+        "def evaluate_packet(packet, rules):\n",
+        "    \"\"\"Return the action of the first matching rule (top-down), or\n",
+        "    'deny' if no rule matches (default-deny).\"\"\"\n",
+        "    for rule in rules:\n",
+        "        if rule_matches(packet, rule):\n",
+        "            return rule[\"action\"]\n",
+        "    return \"deny\"\n",
+        "\n",
+        "def test_experiment1():\n",
+        "    # Misconfigured order: a broad allow placed before a specific deny\n",
+        "    misordered_rules = [\n",
+        "        {\"action\": \"allow\", \"src\": \"any\", \"dst\": \"any\", \"port\": \"any\", \"proto\": \"any\"},\n",
+        "        {\"action\": \"deny\", \"src\": \"10.0.0.5\", \"dst\": \"any\", \"port\": \"any\", \"proto\": \"any\"},\n",
+        "    ]\n",
+        "    packet = {\"src\": \"10.0.0.5\", \"dst\": \"8.8.8.8\", \"port\": 443, \"proto\": \"tcp\"}\n",
+        "    # BUG: Rule 1 matches everything and comes first, so the deny never triggers\n",
+        "    assert evaluate_packet(packet, misordered_rules) == \"allow\"\n",
+        "    # Fixed order: specific deny placed before the broad allow\n",
+        "    fixed_rules = [\n",
+        "        {\"action\": \"deny\", \"src\": \"10.0.0.5\", \"dst\": \"any\", \"port\": \"any\", \"proto\": \"any\"},\n",
+        "        {\"action\": \"allow\", \"src\": \"any\", \"dst\": \"any\", \"port\": \"any\", \"proto\": \"any\"},\n",
+        "    ]\n",
+        "    assert evaluate_packet(packet, fixed_rules) == \"deny\"\n",
+        "    # Default-deny: no rule matches an unrelated packet\n",
+        "    other_packet = {\"src\": \"192.168.1.9\", \"dst\": \"1.1.1.1\", \"port\": 53, \"proto\": \"udp\"}\n",
+        "    assert evaluate_packet(other_packet, []) == \"deny\"\n",
+        "    print(\"All test cases passed.\")\n",
+        "\n",
+        "test_experiment1()"
+      ]
+    }
+  ]
+}
