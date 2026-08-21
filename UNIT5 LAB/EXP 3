@@ -1,0 +1,109 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOjeuGVEDCXzvjFYoHMEfXd",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/UNIT5%20LAB/EXP%203\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "auK2G8v5-QGo",
+        "outputId": "04bd7755-8d09-440a-fe0d-ad6fe530f05f"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "All test cases passed.\n"
+          ]
+        }
+      ],
+      "source": [
+        "def extract_lessons(report_text, tag_rules):\n",
+        "    text = report_text.lower()\n",
+        "    found = []\n",
+        "    for tag, keywords in tag_rules:\n",
+        "        if any(kw in text for kw in keywords):\n",
+        "            found.append(tag)\n",
+        "    return found\n",
+        "\n",
+        "LESSON_TAG_RULES = [\n",
+        "    (\"Patch Management Gap\", [\n",
+        "        \"had not been patched\", \"missing security patch\",\n",
+        "        \"outdated software version\",\n",
+        "    ]),\n",
+        "    (\"Security Awareness Gap\", [\n",
+        "        \"employee clicked the phishing link\",\n",
+        "        \"lack of security awareness training\",\n",
+        "        \"staff were unaware of the policy\",\n",
+        "    ]),\n",
+        "    (\"Monitoring/Detection Gap\", [\n",
+        "        \"went undetected for\", \"no alert was generated\",\n",
+        "        \"monitoring coverage was insufficient\",\n",
+        "    ]),\n",
+        "    (\"Backup Strategy Gap\", [\n",
+        "        \"backups were outdated\", \"backup had not been tested\",\n",
+        "        \"no recent backup was available\",\n",
+        "    ]),\n",
+        "    (\"Access Control Gap\", [\n",
+        "        \"excessive permissions were granted\",\n",
+        "        \"shared administrator credentials were used\",\n",
+        "        \"no multi-factor authentication was enforced\",\n",
+        "    ]),\n",
+        "]\n",
+        "\n",
+        "# Test Cases:\n",
+        "\n",
+        "def test_experiment3():\n",
+        "    r1 = (\n",
+        "    \"The exploited server had not been patched for six months, \"\n",
+        "    \"and the intrusion went undetected for 20 days.\"\n",
+        "    )\n",
+        "    assert set(extract_lessons(r1, LESSON_TAG_RULES)) == {\n",
+        "    \"Patch Management Gap\", \"Monitoring/Detection Gap\",\n",
+        "    }\n",
+        "    r2 = (\n",
+        "    \"An employee clicked the phishing link, and no multi-factor \"\n",
+        "    \"authentication was enforced on the account.\"\n",
+        "    )\n",
+        "    assert set(extract_lessons(r2, LESSON_TAG_RULES)) == {\n",
+        "    \"Security Awareness Gap\", \"Access Control Gap\",\n",
+        "    }\n",
+        "    r3 = \"During recovery, the team discovered backups were outdated and could not be used.\"\n",
+        "    assert extract_lessons(r3, LESSON_TAG_RULES) == [\"Backup Strategy Gap\"]\n",
+        "    r4 = \"The investigation found no significant gaps in this particular incident.\"\n",
+        "    assert extract_lessons(r4, LESSON_TAG_RULES) == []\n",
+        "    print(\"All test cases passed.\")\n",
+        "\n",
+        "test_experiment3()\n"
+      ]
+    }
+  ]
+}
