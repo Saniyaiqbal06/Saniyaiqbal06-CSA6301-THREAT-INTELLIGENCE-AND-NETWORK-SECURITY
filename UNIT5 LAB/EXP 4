@@ -1,0 +1,98 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPSDIpCRRJH8wBQTDJlSnp1",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/UNIT5%20LAB/EXP%204\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "JvFCSPwK_EHU",
+        "outputId": "108e82ae-f59d-4c3a-cbfb-a6a80ec71028"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "All test cases passed.\n"
+          ]
+        }
+      ],
+      "source": [
+        "def validate_custody_chain(records):\n",
+        "  if not records:\n",
+        "    return {\"is_valid\": False, \"reason\": \"No records provided\", \"break_index\": None}\n",
+        "  original_hash = records[0][\"hash\"]\n",
+        "  last_timestamp = records[0][\"timestamp\"]\n",
+        "  for i, record in enumerate(records):\n",
+        "    if record[\"hash\"] != original_hash:\n",
+        "      return {\n",
+        "          \"is_valid\": False,\n",
+        "          \"reason\": \"Hash mismatch - evidence integrity broken\",\n",
+        "          \"break_index\": i,\n",
+        "      }\n",
+        "    if i > 0 and record[\"timestamp\"] < last_timestamp:\n",
+        "      return {\n",
+        "          \"is_valid\": False,\n",
+        "          \"reason\": \"Timestamp out of order - custody sequence broken\",\n",
+        "          \"break_index\": i,\n",
+        "      }\n",
+        "    last_timestamp = record[\"timestamp\"]\n",
+        "  return {\"is_valid\": True, \"reason\": \"Chain of custody intact\", \"break_index\": None}\n",
+        "# Test Cases:\n",
+        "\n",
+        "def test_experiment4():\n",
+        "  good_chain = [\n",
+        "      {\"handler\": \"Officer A\", \"hash\": \"9f8e...ab12\", \"timestamp\": 100},\n",
+        "      {\"handler\": \"Lab Tech B\", \"hash\": \"9f8e...ab12\", \"timestamp\": 150},\n",
+        "      {\"handler\": \"Analyst C\", \"hash\": \"9f8e...ab12\", \"timestamp\": 220},\n",
+        "  ]\n",
+        "  result1 = validate_custody_chain(good_chain)\n",
+        "  assert result1[\"is_valid\"] is True\n",
+        "  tampered_chain = [\n",
+        "      {\"handler\": \"Officer A\", \"hash\": \"9f8e...ab12\", \"timestamp\": 100},\n",
+        "      {\"handler\": \"Lab Tech B\", \"hash\": \"9f8e...ab12\", \"timestamp\": 150},\n",
+        "      {\"handler\": \"Analyst C\", \"hash\": \"DIFFERENT_HASH\", \"timestamp\": 220},\n",
+        "  ]\n",
+        "  result2 = validate_custody_chain(tampered_chain)\n",
+        "  assert result2[\"is_valid\"] is False and result2[\"break_index\"] == 2\n",
+        "  out_of_order_chain = [\n",
+        "      {\"handler\": \"Officer A\", \"hash\": \"abc123\", \"timestamp\": 100},\n",
+        "      {\"handler\": \"Lab Tech B\", \"hash\": \"abc123\", \"timestamp\": 90},\n",
+        "  ]\n",
+        "  result3 = validate_custody_chain(out_of_order_chain)\n",
+        "  assert result3[\"is_valid\"] is False and result3[\"break_index\"] == 1\n",
+        "  assert validate_custody_chain([])[\"is_valid\"] is False\n",
+        "  print(\"All test cases passed.\")\n",
+        "test_experiment4()"
+      ]
+    }
+  ]
+}
