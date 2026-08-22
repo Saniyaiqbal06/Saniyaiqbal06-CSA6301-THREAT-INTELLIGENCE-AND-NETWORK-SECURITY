@@ -1,1 +1,81 @@
-
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyP+8uwHWKKcLlPvdJ57RWr5",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/UNIT5%20LAB/EXP%206\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "5KVa5t_wkthI",
+        "outputId": "a93a5b1b-c428-4137-c049-a882fc15e654"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "All test cases passed.\n"
+          ]
+        }
+      ],
+      "source": [
+        "def calculate_risk(likelihood, impact):\n",
+        "    if not (1 <= likelihood <= 5) or not (1 <= impact <= 5):\n",
+        "        raise ValueError(\"Likelihood and impact must each be between 1 and 5.\")\n",
+        "    score = likelihood * impact\n",
+        "    if score <= 5:\n",
+        "        level = \"Low\"\n",
+        "    elif score <= 12:\n",
+        "        level = \"Medium\"\n",
+        "    elif score <= 19:\n",
+        "        level = \"High\"\n",
+        "    else:\n",
+        "        level = \"Critical\"\n",
+        "    return {\"score\": score, \"level\": level}\n",
+        "\n",
+        "# Test Cases:\n",
+        "def test_experiment6():\n",
+        "    assert calculate_risk(1, 2) == {\"score\": 2, \"level\": \"Low\"}\n",
+        "    assert calculate_risk(3, 4) == {\"score\": 12, \"level\": \"Medium\"}\n",
+        "    assert calculate_risk(4, 4) == {\"score\": 16, \"level\": \"High\"}\n",
+        "    assert calculate_risk(5, 5) == {\"score\": 25, \"level\": \"Critical\"}\n",
+        "    assert calculate_risk(5, 4) == {\"score\": 20, \"level\": \"Critical\"}\n",
+        "    try:\n",
+        "        calculate_risk(6, 1)\n",
+        "        assert False, \"Expected ValueError for out-of-range likelihood\"\n",
+        "    except ValueError:\n",
+        "        pass\n",
+        "    print(\"All test cases passed.\")\n",
+        "\n",
+        "test_experiment6()"
+      ]
+    }
+  ]
+}
