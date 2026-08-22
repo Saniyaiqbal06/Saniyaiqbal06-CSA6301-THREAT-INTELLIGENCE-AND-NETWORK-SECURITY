@@ -1,0 +1,84 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNRRIqfwp+4Eki6F1Hlwj2P",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/UNIT5%20LAB/EXP%205\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "KnmQIzWxjrzu",
+        "outputId": "888d443c-c96a-4b70-9919-bc316362a851"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "All test cases passed.\n"
+          ]
+        }
+      ],
+      "source": [
+        "def check_policy_compliance(policy_text, required_elements):\n",
+        "    text = policy_text.lower()\n",
+        "    missing = [element for element, keyword in required_elements if keyword not in text]\n",
+        "    return missing\n",
+        "REQUIRED_POLICY_ELEMENTS = [\n",
+        "    (\"Scope\", \"scope\"),\n",
+        "    (\"Roles and Responsibilities\", \"responsibilities\"),\n",
+        "    (\"Enforcement/Consequences\", \"enforcement\"),\n",
+        "    (\"Review Cycle\", \"review\"),\n",
+        "    (\"Approval Authority\", \"approved by\"),\n",
+        "]\n",
+        "# Test Cases:\n",
+        "def test_experiment5():\n",
+        "    complete_policy = \"\"\"\n",
+        "Scope: This policy applies to all employees and contractors.\n",
+        "Roles and Responsibilities: The IT department is responsible for enforcement.\n",
+        "Enforcement: Violations may result in disciplinary action.\n",
+        "This policy will undergo an annual review.\n",
+        "Approved by the Chief Information Security Officer.\n",
+        "\"\"\"\n",
+        "    assert check_policy_compliance(complete_policy, REQUIRED_POLICY_ELEMENTS) == []\n",
+        "    incomplete_policy = \"\"\"\n",
+        "Scope: This policy applies to all employees.\n",
+        "The IT department manages this document.\n",
+        "\"\"\"\n",
+        "    missing = check_policy_compliance(incomplete_policy, REQUIRED_POLICY_ELEMENTS)\n",
+        "    assert set(missing) == {\n",
+        "        \"Roles and Responsibilities\", \"Enforcement/Consequences\",\n",
+        "        \"Review Cycle\", \"Approval Authority\",\n",
+        "    }\n",
+        "    print(\"All test cases passed.\")\n",
+        "test_experiment5()"
+      ]
+    }
+  ]
+}
