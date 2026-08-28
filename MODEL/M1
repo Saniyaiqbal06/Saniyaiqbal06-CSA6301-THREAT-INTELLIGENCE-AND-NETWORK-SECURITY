@@ -1,1 +1,67 @@
-
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNEleIZNSjTKOXn1hLhH0Te",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M1\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "id": "mzu_LQu0hvFK",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "a15b97c0-582d-4119-ea6b-f22b1d9e2970"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Describe the security control: Hospital\n",
+            "Most likely ISO/IEC 27001:2022 Annex A domain: Organizational Controls\n"
+          ]
+        }
+      ],
+      "source": [
+        "DOMAINS = {\n",
+        "    \"Organizational Controls\": [\"policy\", \"roles\", \"supplier\", \"threat intelligence\", \"information security\"],\n",
+        "    \"People Controls\": [\"training\", \"awareness\", \"employee\", \"disciplinary\", \"remote working\"],\n",
+        "    \"Physical Controls\": [\"physical\", \"office\", \"entry\", \"door\", \"visitor\", \"equipment\"],\n",
+        "    \"Technological Controls\": [\"firewall\", \"malware\", \"backup\", \"logging\", \"encryption\", \"access control\", \"network\"],\n",
+        "}\n",
+        "\n",
+        "def classify(description):\n",
+        "    t = description.lower()\n",
+        "    scores = {d: sum(k in t for k in keys) for d, keys in DOMAINS.items()}\n",
+        "    return max(scores, key=scores.get)\n",
+        "\n",
+        "description = input(\"Describe the security control: \")\n",
+        "print(\"Most likely ISO/IEC 27001:2022 Annex A domain:\", classify(description))\n"
+      ]
+    }
+  ]
+}
