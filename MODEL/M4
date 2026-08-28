@@ -1,1 +1,73 @@
-
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOR0YqWkcEkOgxgWloI9XI2",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M4\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "id": "cFdW93DkmxZ4",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "ca88c93f-17ba-48f1-b722-df88449d97c4"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Enter plaintext: SANIYA\n",
+            "Captured ciphertext: 69ac3800bc44\n",
+            "Readable without key: i�8\u0000�D\n",
+            "Recovered with shared key: SANIYA\n"
+          ]
+        }
+      ],
+      "source": [
+        "import secrets\n",
+        "\n",
+        "def xor_stream(data, key):\n",
+        "    # Educational stand-in only; real VPNs use authenticated modern cryptography.\n",
+        "    out = bytearray()\n",
+        "    for i, b in enumerate(data):\n",
+        "        out.append(b ^ key[i % len(key)])\n",
+        "    return bytes(out)\n",
+        "\n",
+        "message = input(\"Enter plaintext: \").encode()\n",
+        "key = secrets.token_bytes(16)\n",
+        "\n",
+        "captured = xor_stream(message, key)\n",
+        "print(\"Captured ciphertext:\", captured.hex())\n",
+        "print(\"Readable without key:\", captured.decode(errors=\"replace\"))\n",
+        "\n",
+        "recovered = xor_stream(captured, key)\n",
+        "print(\"Recovered with shared key:\", recovered.decode())\n"
+      ]
+    }
+  ]
+}
