@@ -1,1 +1,74 @@
-
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPpqi7edqAgIKP4VbNLc+qY",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M2\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "id": "waU-Qq7KkHEI",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "be37bb9e-9061-4a17-d902-ec0165ca4640"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Scanning localhost (127.0.0.1)...\n",
+            "Finished. Open ports: []\n"
+          ]
+        }
+      ],
+      "source": [
+        "import socket\n",
+        "\n",
+        "def scan_host(host, start_port=1, end_port=1024, timeout=0.2):\n",
+        "    try:\n",
+        "        ip = socket.gethostbyname(host)\n",
+        "    except socket.gaierror:\n",
+        "        print(\"Invalid/unresolvable host.\")\n",
+        "        return\n",
+        "    print(f\"Scanning {host} ({ip})...\")\n",
+        "    open_ports = []\n",
+        "    for port in range(start_port, end_port + 1):\n",
+        "        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:\n",
+        "            s.settimeout(timeout)\n",
+        "            if s.connect_ex((ip, port)) == 0:\n",
+        "                open_ports.append(port)\n",
+        "                print(f\"OPEN: {port}\")\n",
+        "    print(f\"Finished. Open ports: {open_ports}\")\n",
+        "\n",
+        "# Modified to use 'localhost' by default for demonstration\n",
+        "host = 'localhost'\n",
+        "scan_host(host)"
+      ]
+    }
+  ]
+}
