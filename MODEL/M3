@@ -1,1 +1,90 @@
-
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyM+Q1u2nkMM+akayLQLyJIc",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M3\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "tzu1JqwAmOeP",
+        "outputId": "3d23cb43-f2f5-4629-a294-cedf1dbfbbe8"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Policy text file path (or press Enter for pasted text): \n",
+            "Paste policy text: application\n",
+            "Missing governance elements:\n",
+            "- scope\n",
+            "- roles and responsibilities\n",
+            "- enforcement\n",
+            "- review cycle\n",
+            "- approval authority\n"
+          ]
+        }
+      ],
+      "source": [
+        "REQUIRED = {\n",
+        "    \"scope\": [\"scope\", \"applicability\", \"covered systems\"],\n",
+        "    \"roles and responsibilities\": [\"roles and responsibilities\", \"responsibilities\", \"security roles\"],\n",
+        "    \"enforcement\": [\"enforcement\", \"disciplinary\", \"violations\", \"non-compliance\"],\n",
+        "    \"review cycle\": [\"review cycle\", \"review annually\", \"review every\", \"periodic review\"],\n",
+        "    \"approval authority\": [\"approval authority\", \"approved by\", \"policy owner\", \"approver\"],\n",
+        "}\n",
+        "\n",
+        "def check_policy(text):\n",
+        "    t = text.lower()\n",
+        "    missing = [name for name, terms in REQUIRED.items()\n",
+        "               if not any(term in t for term in terms)]\n",
+        "    return missing\n",
+        "\n",
+        "path = input(\"Policy text file path (or press Enter for pasted text): \").strip()\n",
+        "if path:\n",
+        "    try:\n",
+        "        text = open(path, encoding=\"utf-8\").read()\n",
+        "    except OSError as e:\n",
+        "        print(\"Could not read file:\", e)\n",
+        "        text = \"\"\n",
+        "else:\n",
+        "    text = input(\"Paste policy text: \")\n",
+        "\n",
+        "missing = check_policy(text)\n",
+        "if missing:\n",
+        "    print(\"Missing governance elements:\")\n",
+        "    for item in missing:\n",
+        "        print(\"-\", item)\n",
+        "else:\n",
+        "    print(\"All required governance elements were found.\")\n"
+      ]
+    }
+  ]
+}
