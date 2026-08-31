@@ -1,0 +1,78 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyODZzHxGYN+CSUiUpdT8DCL",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M21\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "oFSKyAbTl6jW",
+        "outputId": "0030156d-fa46-4a07-9c94-11212d0fe166"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Post-incident report file (press Enter to paste): \n",
+            "Report text: RESTORE\n",
+            "Improvement areas: backup strategy\n"
+          ]
+        }
+      ],
+      "source": [
+        "AREAS = {\n",
+        "    \"patch management\": [\"patch\", \"update\", \"vulnerability management\", \"unpatched\"],\n",
+        "    \"security awareness\": [\"awareness\", \"training\", \"phishing simulation\", \"user education\"],\n",
+        "    \"monitoring\": [\"monitoring\", \"siem\", \"alert\", \"logging\", \"detection\", \"visibility\"],\n",
+        "    \"backup strategy\": [\"backup\", \"restore\", \"recovery point\", \"offline copy\", \"disaster recovery\"],\n",
+        "    \"access control\": [\"access control\", \"least privilege\", \"permission\", \"mfa\", \"privilege\"],\n",
+        "}\n",
+        "\n",
+        "def tag_report(text):\n",
+        "    t = text.lower()\n",
+        "    return [area for area, words in AREAS.items() if any(w in t for w in words)]\n",
+        "\n",
+        "path = input(\"Post-incident report file (press Enter to paste): \").strip()\n",
+        "if path:\n",
+        "    try:\n",
+        "        text = open(path, encoding=\"utf-8\").read()\n",
+        "    except OSError as e:\n",
+        "        print(\"Could not read report:\", e)\n",
+        "        text = \"\"\n",
+        "else:\n",
+        "    text = input(\"Report text: \")\n",
+        "\n",
+        "tags = tag_report(text)\n",
+        "print(\"Improvement areas:\", \", \".join(tags) if tags else \"None detected\")\n"
+      ]
+    }
+  ]
+}
