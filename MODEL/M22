@@ -1,0 +1,81 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNKq+DUuU6lttX7P+kWKvOl",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M22\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "HcLMe26lmBB_",
+        "outputId": "ae14d405-4682-4758-a12f-06b3e1cb52f1"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Authentication log file path: \"C:\\Users\\WELCOME\\Desktop\\Annam Reddy Ashwini (192465065).pdf\"\n",
+            "User account to check: SUCCESS\n",
+            "Could not read log: [Errno 2] No such file or directory: '\"C:\\\\Users\\\\WELCOME\\\\Desktop\\\\Annam Reddy Ashwini (192465065).pdf\"'\n"
+          ]
+        }
+      ],
+      "source": [
+        "import re\n",
+        "\n",
+        "def detect_bruteforce(lines, target_user):\n",
+        "    failed = 0\n",
+        "    for line in lines:\n",
+        "        m = re.search(r\"user=(\\S+)\\s+status=(\\S+)\", line, re.I)\n",
+        "        if not m:\n",
+        "            continue\n",
+        "        user, status = m.groups()\n",
+        "        if user != target_user:\n",
+        "            continue\n",
+        "        if status.lower() == \"failed\":\n",
+        "            failed += 1\n",
+        "        elif status.lower() == \"success\" and failed > 0:\n",
+        "            return True, failed\n",
+        "    return False, failed\n",
+        "\n",
+        "path = input(\"Authentication log file path: \").strip()\n",
+        "user = input(\"User account to check: \").strip()\n",
+        "try:\n",
+        "    with open(path, encoding=\"utf-8\") as f:\n",
+        "        lines = f.readlines()\n",
+        "    detected, count = detect_bruteforce(lines, user)\n",
+        "    print(\"BRUTE-FORCE PATTERN DETECTED\" if detected else \"No brute-force pattern detected\",\n",
+        "          f\"(failed attempts before success: {count})\")\n",
+        "except OSError as e:\n",
+        "    print(\"Could not read log:\", e)\n"
+      ]
+    }
+  ]
+}
