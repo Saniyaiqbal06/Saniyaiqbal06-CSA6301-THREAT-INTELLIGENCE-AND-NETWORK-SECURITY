@@ -1,0 +1,79 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNa+yqSz6c9Wpvg1WY9X6TB",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M13\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "vo7iF4Qligl1",
+        "outputId": "6fe64585-b0e6-4a35-ca9f-4e8d5f43002d"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Collected indicator/data: DATA\n",
+            "Context (who/what/when/where): WHEN\n",
+            "Confidence 0-100: 55\n",
+            "Actionability (what can defenders do?): ACCESS\n",
+            "GENUINE THREAT INTELLIGENCE\n"
+          ]
+        }
+      ],
+      "source": [
+        "def assess(data):\n",
+        "    required = [\"context\", \"confidence\", \"actionability\"]\n",
+        "    missing = [x for x in required if not data.get(x)]\n",
+        "    if missing:\n",
+        "        return \"RAW/UNPROCESSED DATA\", missing\n",
+        "    try:\n",
+        "        confidence = float(data[\"confidence\"])\n",
+        "    except ValueError:\n",
+        "        return \"RAW/UNPROCESSED DATA\", [\"confidence must be numeric\"]\n",
+        "    if not 0 <= confidence <= 100:\n",
+        "        return \"RAW/UNPROCESSED DATA\", [\"confidence must be 0-100\"]\n",
+        "    return (\"GENUINE THREAT INTELLIGENCE\", []) if data[\"actionability\"].strip() else (\"RAW/UNPROCESSED DATA\", [\"actionability\"])\n",
+        "\n",
+        "data = {\n",
+        "    \"indicator\": input(\"Collected indicator/data: \"),\n",
+        "    \"context\": input(\"Context (who/what/when/where): \"),\n",
+        "    \"confidence\": input(\"Confidence 0-100: \"),\n",
+        "    \"actionability\": input(\"Actionability (what can defenders do?): \"),\n",
+        "}\n",
+        "result, issues = assess(data)\n",
+        "print(result)\n",
+        "if issues:\n",
+        "    print(\"Missing/invalid:\", \", \".join(issues))\n"
+      ]
+    }
+  ]
+}
