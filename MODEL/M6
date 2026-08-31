@@ -1,1 +1,93 @@
-
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyM64edbPgKYy3WDU0HpiD1i",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M6\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "I-YQeRS84F--",
+        "outputId": "793994eb-f9c7-464c-eacf-ebc087670865"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Enter URL: https://loginrequired.com\n",
+            "POSSIBLE PHISHING\n",
+            "- Suspicious keyword\n"
+          ]
+        }
+      ],
+      "source": [
+        "import re\n",
+        "import ipaddress\n",
+        "from urllib.parse import urlparse\n",
+        "\n",
+        "SUSPICIOUS_WORDS = [\"login\", \"verify\", \"verification\", \"password\", \"secure\", \"account\",\n",
+        "                    \"update\", \"confirm\", \"wallet\", \"payment\", \"signin\"]\n",
+        "\n",
+        "def analyze_url(url):\n",
+        "    if not re.match(r\"^[a-zA-Z][a-zA-Z0-9+.-]*://\", url):\n",
+        "        url = \"http://\" + url\n",
+        "    p = urlparse(url)\n",
+        "    host = p.hostname or \"\"\n",
+        "    indicators = []\n",
+        "\n",
+        "    try:\n",
+        "        ipaddress.ip_address(host)\n",
+        "        indicators.append(\"IP address used as domain\")\n",
+        "    except ValueError:\n",
+        "        pass\n",
+        "\n",
+        "    if len(host.split(\".\")) >= 4:\n",
+        "        indicators.append(\"Excessive subdomains\")\n",
+        "\n",
+        "    if any(word in url.lower() for word in SUSPICIOUS_WORDS):\n",
+        "        indicators.append(\"Suspicious keyword\")\n",
+        "    if \"@\" in url:\n",
+        "        indicators.append(\"@ symbol can hide the real destination\")\n",
+        "    if len(url) > 150:\n",
+        "        indicators.append(\"Unusually long URL\")\n",
+        "    if p.scheme.lower() != \"https\":\n",
+        "        indicators.append(\"Not using HTTPS\")\n",
+        "\n",
+        "    return indicators\n",
+        "\n",
+        "url = input(\"Enter URL: \").strip()\n",
+        "findings = analyze_url(url)\n",
+        "print(\"POSSIBLE PHISHING\" if findings else \"No common phishing indicators detected\")\n",
+        "for f in findings:\n",
+        "    print(\"-\", f)\n"
+      ]
+    }
+  ]
+}
