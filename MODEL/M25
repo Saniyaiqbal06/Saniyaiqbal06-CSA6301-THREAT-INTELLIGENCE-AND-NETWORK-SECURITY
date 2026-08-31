@@ -1,0 +1,86 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOvZ9o5G4j2Rej7cLSBw4se",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M25\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "m54oJHnvmx5E",
+        "outputId": "0a349944-bdae-42a9-ed33-7099eec4e49f"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "VALID - Chain is unbroken and timestamps are non-decreasing.\n"
+          ]
+        }
+      ],
+      "source": [
+        "import hashlib\n",
+        "from datetime import datetime\n",
+        "\n",
+        "def verify(records):\n",
+        "    previous_hash = None\n",
+        "    previous_time = None\n",
+        "    for i, r in enumerate(records, 1):\n",
+        "        timestamp = datetime.fromisoformat(r[\"timestamp\"])\n",
+        "        content = f'{r[\"evidence_id\"]}|{r[\"action\"]}|{r[\"timestamp\"]}|{r[\"previous_hash\"]}'\n",
+        "        expected = hashlib.sha256(content.encode()).hexdigest()\n",
+        "\n",
+        "        if r[\"previous_hash\"] != previous_hash:\n",
+        "            return False, f\"Record {i}: broken previous-hash chain\"\n",
+        "        if previous_time and timestamp < previous_time:\n",
+        "            return False, f\"Record {i}: timestamp decreased\"\n",
+        "        if r[\"hash\"] != expected:\n",
+        "            return False, f\"Record {i}: record hash mismatch\"\n",
+        "\n",
+        "        previous_hash = r[\"hash\"]\n",
+        "        previous_time = timestamp\n",
+        "    return True, \"Chain is unbroken and timestamps are non-decreasing.\"\n",
+        "\n",
+        "records = []\n",
+        "previous = None\n",
+        "for i, action in enumerate([\"Collected\", \"Transferred\", \"Stored\"], 1):\n",
+        "    ts = f\"2026-08-28T09:0{i}:00\"\n",
+        "    base = f\"EVIDENCE-01|{action}|{ts}|{previous}\"\n",
+        "    h = hashlib.sha256(base.encode()).hexdigest()\n",
+        "    records.append({\"evidence_id\":\"EVIDENCE-01\",\"action\":action,\n",
+        "                    \"timestamp\":ts,\"previous_hash\":previous,\"hash\":h})\n",
+        "    previous = h\n",
+        "\n",
+        "ok, message = verify(records)\n",
+        "print(\"VALID\" if ok else \"INVALID\", \"-\", message)\n"
+      ]
+    }
+  ]
+}
