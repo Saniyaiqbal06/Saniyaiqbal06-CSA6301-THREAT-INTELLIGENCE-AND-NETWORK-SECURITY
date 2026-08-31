@@ -1,0 +1,76 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyM5hNi6/FswDBJV0UgGaBre",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M35\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Z2J0HRbxpgFj",
+        "outputId": "0297a9b1-4dd5-48cd-a803-aacc21d24067"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "alice: no excess access\n",
+            "bob: EXCESS ACCESS -> ['manage_users']\n",
+            "carol: no excess access\n"
+          ]
+        }
+      ],
+      "source": [
+        "REQUIRED_BY_ROLE = {\n",
+        "    \"analyst\": {\"read_logs\", \"create_ticket\"},\n",
+        "    \"developer\": {\"read_code\", \"deploy_test\"},\n",
+        "    \"admin\": {\"read_logs\", \"manage_users\", \"backup_restore\"},\n",
+        "}\n",
+        "\n",
+        "ACCOUNTS = {\n",
+        "    \"alice\": (\"analyst\", {\"read_logs\", \"create_ticket\"}),\n",
+        "    \"bob\": (\"developer\", {\"read_code\", \"deploy_test\", \"manage_users\"}),\n",
+        "    \"carol\": (\"admin\", {\"read_logs\", \"manage_users\", \"backup_restore\"}),\n",
+        "}\n",
+        "\n",
+        "for user, (role, permissions) in ACCOUNTS.items():\n",
+        "    required = REQUIRED_BY_ROLE.get(role, set())\n",
+        "    excess = permissions - required\n",
+        "    missing = required - permissions\n",
+        "    if excess:\n",
+        "        print(f\"{user}: EXCESS ACCESS -> {sorted(excess)}\")\n",
+        "    else:\n",
+        "        print(f\"{user}: no excess access\")\n",
+        "    if missing:\n",
+        "        print(f\"       missing required permissions -> {sorted(missing)}\")\n"
+      ]
+    }
+  ]
+}
