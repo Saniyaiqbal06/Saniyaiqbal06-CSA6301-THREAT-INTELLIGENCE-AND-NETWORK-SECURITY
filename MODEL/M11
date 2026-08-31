@@ -1,0 +1,108 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPPYQNcz7QfNGbKrKmLCPtZ",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M11\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "47n8-fKTiAez",
+        "outputId": "3a18f9c4-daff-40ed-aaaa-4a9d4c3acb6d"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Scapy is not installed. Installing Scapy...\n",
+            "Collecting scapy\n",
+            "  Downloading scapy-2.7.0-py3-none-any.whl.metadata (5.8 kB)\n",
+            "Downloading scapy-2.7.0-py3-none-any.whl (2.6 MB)\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m2.6/2.6 MB\u001b[0m \u001b[31m41.0 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hInstalling collected packages: scapy\n",
+            "Successfully installed scapy-2.7.0\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/usr/local/lib/python3.13/dist-packages/scapy/layers/tls/crypto/groups.py:25: CryptographyDeprecationWarning: Diffie-Hellman over finite fields (FFDH) is deprecated and support will be removed in a future release. Use a more modern key exchange algorithm.\n",
+            "  from cryptography.hazmat.primitives.asymmetric.dh import DHParameterNumbers\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Interface (press Enter for default): \n",
+            "Number of packets [10]: 5\n",
+            "Starting packet capture. Stop with Ctrl+C.\n",
+            "Ether / IP / TCP 172.28.0.1:53796 > 172.28.0.12:8080 PA / Raw\n",
+            "Ether / IP / TCP 172.28.0.12:8080 > 172.28.0.1:53796 PA / Raw\n",
+            "Ether / IP / TCP 172.28.0.1:53796 > 172.28.0.12:8080 A\n",
+            "Ether / IP / TCP 172.28.0.12:8080 > 172.28.0.1:53782 PA / Raw\n",
+            "Ether / IP / TCP 172.28.0.1:53782 > 172.28.0.12:8080 A\n"
+          ]
+        }
+      ],
+      "source": [
+        "try:\n",
+        "    from scapy.all import sniff\n",
+        "except ImportError:\n",
+        "    print(\"Scapy is not installed. Installing Scapy...\")\n",
+        "    !pip install scapy\n",
+        "    try:\n",
+        "        from scapy.all import sniff\n",
+        "    except ImportError:\n",
+        "        print(\"Failed to install Scapy. Please try installing it manually with: pip install scapy\")\n",
+        "        raise SystemExit(1)\n",
+        "\n",
+        "def show_packet(pkt):\n",
+        "    print(pkt.summary())\n",
+        "\n",
+        "iface = input(\"Interface (press Enter for default): \").strip() or None\n",
+        "count_text = input(\"Number of packets [10]: \").strip() or \"10\"\n",
+        "try:\n",
+        "    count = max(1, int(count_text))\n",
+        "except ValueError:\n",
+        "    count = 10\n",
+        "\n",
+        "print(\"Starting packet capture. Stop with Ctrl+C.\")\n",
+        "try:\n",
+        "    sniff(iface=iface, prn=show_packet, count=count, store=False)\n",
+        "except PermissionError:\n",
+        "    print(\"Permission denied. Run the program with appropriate packet-capture privileges.\")\n",
+        "except OSError as e:\n",
+        "    print(\"Capture error:\", e)\n"
+      ]
+    }
+  ]
+}
