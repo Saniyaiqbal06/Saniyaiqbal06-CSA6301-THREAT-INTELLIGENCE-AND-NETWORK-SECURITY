@@ -1,1 +1,76 @@
-
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNEy8KBe3/Ld94+lUTSXbzh",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M8\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "yLtOyqbChCd-",
+        "outputId": "202c4c2f-a2f1-48ac-e195-2adc1dfe58c3"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Compromised source segment [Low-Trust/User/Sensitive]: User\n",
+            "Destination service [Web/Database/Admin]: Database\n",
+            "BLOCKED: segmentation prevents lateral movement.\n"
+          ]
+        }
+      ],
+      "source": [
+        "SEGMENTS = {\n",
+        "    \"Low-Trust\": {\"Web\": \"Low-Trust\", \"Database\": \"Sensitive\", \"Admin\": \"Sensitive\"},\n",
+        "    \"User\": {\"Web\": \"Low-Trust\", \"Database\": \"Sensitive\", \"Admin\": \"Sensitive\"},\n",
+        "    \"Sensitive\": {\"Database\": \"Sensitive\", \"Admin\": \"Sensitive\"},\n",
+        "}\n",
+        "\n",
+        "ALLOWED = {\n",
+        "    (\"Low-Trust\", \"Web\"),\n",
+        "    (\"User\", \"Web\"),\n",
+        "    (\"Sensitive\", \"Database\"),\n",
+        "    (\"Sensitive\", \"Admin\"),\n",
+        "}\n",
+        "\n",
+        "def can_connect(source_segment, destination_service):\n",
+        "    return (source_segment, destination_service) in ALLOWED\n",
+        "\n",
+        "source = input(\"Compromised source segment [Low-Trust/User/Sensitive]: \").strip() or \"Low-Trust\"\n",
+        "destination = input(\"Destination service [Web/Database/Admin]: \").strip() or \"Database\"\n",
+        "if can_connect(source, destination):\n",
+        "    print(\"ALLOWED: policy permits this connection.\")\n",
+        "else:\n",
+        "    print(\"BLOCKED: segmentation prevents lateral movement.\")\n"
+      ]
+    }
+  ]
+}
