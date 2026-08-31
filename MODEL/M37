@@ -1,0 +1,81 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMDcZYB5xje1jlRg4gXrlym",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M37\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "id": "3MgbFoLLp5Jq",
+        "outputId": "e16ca13c-864b-4edf-faf6-21337ca587a5",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Processed: {'user': 'alice', 'ip': '10.0.0.1', 'status': 'success'}\n",
+            "Processed: {'user': 'alice', 'ip': '10.0.0.1', 'status': 'success'}\n",
+            "Processed: {'user': 'bob', 'ip': '203.0.113.10', 'status': 'failed'}\n",
+            "Processed: {'user': 'bob', 'ip': '203.0.113.10', 'status': 'failed'}\n",
+            "Processed: {'user': 'bob', 'ip': '203.0.113.10', 'status': 'failed'}\n",
+            "ANOMALY: bob has 4 failed logins in the monitoring window\n",
+            "Processed: {'user': 'bob', 'ip': '203.0.113.10', 'status': 'failed'}\n"
+          ]
+        }
+      ],
+      "source": [
+        "import time\n",
+        "from collections import Counter, deque\n",
+        "\n",
+        "events = [\n",
+        "    {\"user\":\"alice\",\"ip\":\"10.0.0.1\",\"status\":\"success\"},\n",
+        "    {\"user\":\"alice\",\"ip\":\"10.0.0.1\",\"status\":\"success\"},\n",
+        "    {\"user\":\"bob\",\"ip\":\"203.0.113.10\",\"status\":\"failed\"},\n",
+        "    {\"user\":\"bob\",\"ip\":\"203.0.113.10\",\"status\":\"failed\"},\n",
+        "    {\"user\":\"bob\",\"ip\":\"203.0.113.10\",\"status\":\"failed\"},\n",
+        "    {\"user\":\"bob\",\"ip\":\"203.0.113.10\",\"status\":\"failed\"},\n",
+        "]\n",
+        "\n",
+        "baseline = {\"max_failed_logins_in_window\": 3}\n",
+        "window = deque(maxlen=5)\n",
+        "\n",
+        "for event in events:\n",
+        "    window.append(event)\n",
+        "    failed = Counter(e[\"user\"] for e in window if e[\"status\"] == \"failed\")\n",
+        "    for user, count in failed.items():\n",
+        "        if count > baseline[\"max_failed_logins_in_window\"]:\n",
+        "            print(f\"ANOMALY: {user} has {count} failed logins in the monitoring window\")\n",
+        "    print(\"Processed:\", event)\n",
+        "    time.sleep(0.1)\n"
+      ]
+    }
+  ]
+}
