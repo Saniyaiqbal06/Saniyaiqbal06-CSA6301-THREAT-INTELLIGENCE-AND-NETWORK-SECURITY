@@ -1,0 +1,76 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMgak48n0F37pD8iCjoOIxM",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M34\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "BM5p-czGpW2U",
+        "outputId": "535b1dbf-4321-49c2-8124-ab1c0f5ba7d6"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Hypothesis-based results: [{'ip': '10.0.0.9', 'user': 'bob', 'event': 'powershell', 'indicator': 'suspicious'}]\n",
+            "Intelligence-based results: [{'ip': '10.0.0.9', 'user': 'bob', 'event': 'download', 'indicator': 'malicious_ip'}]\n",
+            "Analytics-based results: [{'ip': '10.0.0.9', 'user': 'bob', 'event': 'powershell', 'indicator': 'suspicious'}, {'ip': '10.0.0.9', 'user': 'bob', 'event': 'download', 'indicator': 'malicious_ip'}]\n"
+          ]
+        }
+      ],
+      "source": [
+        "DATASET = [\n",
+        "    {\"ip\":\"10.0.0.5\",\"user\":\"alice\",\"event\":\"login\",\"indicator\":\"none\"},\n",
+        "    {\"ip\":\"10.0.0.9\",\"user\":\"bob\",\"event\":\"powershell\",\"indicator\":\"suspicious\"},\n",
+        "    {\"ip\":\"10.0.0.9\",\"user\":\"bob\",\"event\":\"download\",\"indicator\":\"malicious_ip\"},\n",
+        "    {\"ip\":\"10.0.0.7\",\"user\":\"carol\",\"event\":\"login\",\"indicator\":\"none\"},\n",
+        "]\n",
+        "\n",
+        "# 1. Hypothesis-based: start with a suspected behavior.\n",
+        "hypothesis = [e for e in DATASET if e[\"event\"] == \"powershell\" and e[\"indicator\"] != \"none\"]\n",
+        "\n",
+        "# 2. Intelligence-based: search known indicators from an intelligence feed.\n",
+        "known_iocs = {\"malicious_ip\"}\n",
+        "intel_based = [e for e in DATASET if e[\"indicator\"] in known_iocs]\n",
+        "\n",
+        "# 3. Analytics-based: use a simple anomaly rule.\n",
+        "from collections import Counter\n",
+        "counts = Counter(e[\"ip\"] for e in DATASET)\n",
+        "analytics_based = [e for e in DATASET if counts[e[\"ip\"]] >= 2]\n",
+        "\n",
+        "print(\"Hypothesis-based results:\", hypothesis)\n",
+        "print(\"Intelligence-based results:\", intel_based)\n",
+        "print(\"Analytics-based results:\", analytics_based)\n"
+      ]
+    }
+  ]
+}
