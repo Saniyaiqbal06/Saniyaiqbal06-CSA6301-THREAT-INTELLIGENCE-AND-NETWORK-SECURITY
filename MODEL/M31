@@ -1,0 +1,85 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMcwhzYxT5YsdnXs5BzZ17d",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M31\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Oglj2nF4okgu",
+        "outputId": "de67893a-49b9-43c3-fc50-b1a9b1d60ea4"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "{'src': '10.0.0.5', 'dst_port': 22} => DENY\n",
+            "{'src': '10.0.0.5', 'dst_port': 80} => DENY (default)\n",
+            "{'src': '10.0.0.8', 'dst_port': 80} => DENY (default)\n",
+            "{'src': '203.0.113.4', 'dst_port': 80} => DENY (default)\n",
+            "\n",
+            "Rule-order lesson: the first matching rule wins; place specific exceptions before broad rules.\n"
+          ]
+        }
+      ],
+      "source": [
+        "RULES = [\n",
+        "    {\"action\":\"DENY\",\"src\":\"10.0.0.5\",\"dst_port\":22},\n",
+        "    {\"action\":\"ALLOW\",\"src\":\"10.0.0.0/24\",\"dst_port\":80},\n",
+        "    # Default deny applies after these rules.\n",
+        "]\n",
+        "\n",
+        "def matches(rule, packet):\n",
+        "    src_ok = rule.get(\"src\") in (None, packet[\"src\"])\n",
+        "    port_ok = rule.get(\"dst_port\") in (None, packet[\"dst_port\"])\n",
+        "    return src_ok and port_ok\n",
+        "\n",
+        "def filter_packet(packet):\n",
+        "    for rule in RULES:\n",
+        "        if matches(rule, packet):\n",
+        "            return rule[\"action\"]\n",
+        "    return \"DENY (default)\"\n",
+        "\n",
+        "packets = [\n",
+        "    {\"src\":\"10.0.0.5\",\"dst_port\":22},\n",
+        "    {\"src\":\"10.0.0.5\",\"dst_port\":80},\n",
+        "    {\"src\":\"10.0.0.8\",\"dst_port\":80},\n",
+        "    {\"src\":\"203.0.113.4\",\"dst_port\":80},\n",
+        "]\n",
+        "\n",
+        "for p in packets:\n",
+        "    print(p, \"=>\", filter_packet(p))\n",
+        "\n",
+        "print(\"\\nRule-order lesson: the first matching rule wins; place specific exceptions before broad rules.\")\n"
+      ]
+    }
+  ]
+}
