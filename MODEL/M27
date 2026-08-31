@@ -1,0 +1,77 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNsbC7IgYyoUwCnsd6K96RP",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M27\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "JXO6Cuf6neQW",
+        "outputId": "ffb752b0-4852-4c1f-a703-18d0a85e1d62"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "{'protocol': 'TCP', 'port': 80, 'payload': 'normal text'} => NO ALERT\n",
+            "{'protocol': 'UDP', 'port': 53, 'payload': 'malicious_payload'} => NO ALERT\n",
+            "{'protocol': 'TCP', 'port': 80, 'payload': 'malicious_payload'} => ALERT: HTTP_TEST\n",
+            "{'protocol': 'UDP', 'port': 53, 'payload': 'bad.example query'} => ALERT: DNS_TEST\n"
+          ]
+        }
+      ],
+      "source": [
+        "SIGNATURES = [\n",
+        "    {\"name\":\"HTTP_TEST\", \"protocol\":\"TCP\", \"port\":80, \"pattern\":\"malicious_payload\"},\n",
+        "    {\"name\":\"DNS_TEST\", \"protocol\":\"UDP\", \"port\":53, \"pattern\":\"bad.example\"},\n",
+        "]\n",
+        "\n",
+        "def detect(packet):\n",
+        "    for sig in SIGNATURES:\n",
+        "        if (packet.get(\"protocol\") == sig[\"protocol\"] and\n",
+        "            packet.get(\"port\") == sig[\"port\"] and\n",
+        "            sig[\"pattern\"].lower() in packet.get(\"payload\", \"\").lower()):\n",
+        "            return f\"ALERT: {sig['name']}\"\n",
+        "    return \"NO ALERT\"\n",
+        "\n",
+        "packets = [\n",
+        "    {\"protocol\":\"TCP\",\"port\":80,\"payload\":\"normal text\"},\n",
+        "    {\"protocol\":\"UDP\",\"port\":53,\"payload\":\"malicious_payload\"},\n",
+        "    {\"protocol\":\"TCP\",\"port\":80,\"payload\":\"malicious_payload\"},\n",
+        "    {\"protocol\":\"UDP\",\"port\":53,\"payload\":\"bad.example query\"},\n",
+        "]\n",
+        "\n",
+        "for packet in packets:\n",
+        "    print(packet, \"=>\", detect(packet))\n"
+      ]
+    }
+  ]
+}
