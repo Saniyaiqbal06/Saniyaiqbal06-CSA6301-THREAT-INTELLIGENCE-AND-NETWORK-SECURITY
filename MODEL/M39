@@ -1,0 +1,86 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOOO6fSM0rzahnwQPNX5Xk1",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M39\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "spbzOgFfqUiO",
+        "outputId": "3794cba1-24ad-4984-b5fc-0c1af8514cc9"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Normalized IOCs: [{'type': 'ip', 'value': '198.51.100.20'}, {'type': 'domain', 'value': 'malicious.example'}, {'type': 'ip', 'value': '203.0.113.55'}]\n",
+            "TIP ALERT: IOC matched internal log -> {'type': 'ip', 'value': '198.51.100.20'} {'src_ip': '10.0.0.5', 'dest_ip': '198.51.100.20', 'event': 'connection'}\n",
+            "TIP ALERT: IOC matched internal log -> {'type': 'domain', 'value': 'malicious.example'} {'src_ip': '10.0.0.9', 'domain': 'malicious.example', 'event': 'dns'}\n"
+          ]
+        }
+      ],
+      "source": [
+        "from collections import defaultdict\n",
+        "\n",
+        "RAW_FEED = [\n",
+        "    \"IP=198.51.100.20\",\n",
+        "    \" domain = malicious.example \",\n",
+        "    \"IP=203.0.113.55\",\n",
+        "]\n",
+        "\n",
+        "INTERNAL_LOGS = [\n",
+        "    {\"src_ip\":\"10.0.0.5\",\"dest_ip\":\"198.51.100.20\",\"event\":\"connection\"},\n",
+        "    {\"src_ip\":\"10.0.0.8\",\"dest_ip\":\"8.8.8.8\",\"event\":\"connection\"},\n",
+        "    {\"src_ip\":\"10.0.0.9\",\"domain\":\"malicious.example\",\"event\":\"dns\"},\n",
+        "]\n",
+        "\n",
+        "def normalize(item):\n",
+        "    item = item.strip()\n",
+        "    if \"=\" not in item:\n",
+        "        return None\n",
+        "    kind, value = [x.strip().lower() for x in item.split(\"=\", 1)]\n",
+        "    if kind in (\"ip\", \"domain\") and value:\n",
+        "        return {\"type\": kind, \"value\": value}\n",
+        "    return None\n",
+        "\n",
+        "iocs = [x for x in (normalize(v) for v in RAW_FEED) if x]\n",
+        "print(\"Normalized IOCs:\", iocs)\n",
+        "\n",
+        "for ioc in iocs:\n",
+        "    for log in INTERNAL_LOGS:\n",
+        "        match = (ioc[\"type\"] == \"ip\" and log.get(\"dest_ip\") == ioc[\"value\"]) or \\\n",
+        "                (ioc[\"type\"] == \"domain\" and log.get(\"domain\") == ioc[\"value\"])\n",
+        "        if match:\n",
+        "            print(\"TIP ALERT: IOC matched internal log ->\", ioc, log)\n"
+      ]
+    }
+  ]
+}
