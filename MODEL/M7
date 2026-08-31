@@ -1,1 +1,91 @@
-
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNPdJWgSqEyBxkF9Oz6JXPP",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M7\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "4sRGcgKi4P-x",
+        "outputId": "4c3d7310-3559-4be9-b30d-4ac5977bc8fd"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Indexed events:\n",
+            "0 {'timestamp': '2026-08-28 09:10:01', 'level': 'INFO', 'user': 'alice', 'ip': '10.0.0.5', 'action': 'login', 'status': 'success'}\n",
+            "1 {'timestamp': '2026-08-28 09:10:05', 'level': 'WARN', 'user': 'bob', 'ip': '10.0.0.8', 'action': 'login', 'status': 'failed'}\n",
+            "2 {'timestamp': '2026-08-28 09:10:06', 'level': 'WARN', 'user': 'bob', 'ip': '10.0.0.8', 'action': 'login', 'status': 'failed'}\n",
+            "3 {'timestamp': '2026-08-28 09:10:07', 'level': 'INFO', 'user': 'bob', 'ip': '10.0.0.8', 'action': 'login', 'status': 'success'}\n",
+            "\n",
+            "Status counts: {'success': 2, 'failed': 2}\n",
+            "User counts: {'alice': 1, 'bob': 3}\n"
+          ]
+        }
+      ],
+      "source": [
+        "import re\n",
+        "from collections import Counter\n",
+        "\n",
+        "RAW_LOGS = [\n",
+        "    \"2026-08-28 09:10:01 INFO user=alice ip=10.0.0.5 action=login status=success\",\n",
+        "    \"2026-08-28 09:10:05 WARN user=bob ip=10.0.0.8 action=login status=failed\",\n",
+        "    \"2026-08-28 09:10:06 WARN user=bob ip=10.0.0.8 action=login status=failed\",\n",
+        "    \"2026-08-28 09:10:07 INFO user=bob ip=10.0.0.8 action=login status=success\",\n",
+        "]\n",
+        "\n",
+        "def parse(line):\n",
+        "    event = {}\n",
+        "    first, *rest = line.split()\n",
+        "    event[\"timestamp\"] = first + \" \" + rest.pop(0)\n",
+        "    event[\"level\"] = rest.pop(0)\n",
+        "    for token in rest:\n",
+        "        if \"=\" in token:\n",
+        "            k, v = token.split(\"=\", 1)\n",
+        "            event[k] = v\n",
+        "    return event\n",
+        "\n",
+        "events = [parse(x) for x in RAW_LOGS]       # Logstash-style parsing\n",
+        "index = {str(i): e for i, e in enumerate(events)}  # Elasticsearch-style index\n",
+        "\n",
+        "status_counts = Counter(e.get(\"status\", \"unknown\") for e in index.values())  # Kibana-style aggregation\n",
+        "user_counts = Counter(e.get(\"user\", \"unknown\") for e in index.values())\n",
+        "\n",
+        "print(\"Indexed events:\")\n",
+        "for k, v in index.items():\n",
+        "    print(k, v)\n",
+        "print(\"\\nStatus counts:\", dict(status_counts))\n",
+        "print(\"User counts:\", dict(user_counts))\n"
+      ]
+    }
+  ]
+}
