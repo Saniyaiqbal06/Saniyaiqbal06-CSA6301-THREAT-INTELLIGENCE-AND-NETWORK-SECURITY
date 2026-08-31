@@ -1,1 +1,76 @@
-
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyN2ludGJnFOzGcT7ppoglKR",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M10\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "KT0_PhJohqH0",
+        "outputId": "57d50deb-1094-43c9-c3cc-0875c7b8679e"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "{'direction': 'OUTBOUND', 'src': '10.0.0.10', 'sport': 50000, 'dst': '8.8.8.8', 'dport': 53} => PERMIT (outbound connection recorded)\n",
+            "{'direction': 'INBOUND', 'src': '8.8.8.8', 'sport': 53, 'dst': '10.0.0.10', 'dport': 50000} => PERMIT (return traffic for established connection)\n",
+            "{'direction': 'INBOUND', 'src': '203.0.113.50', 'sport': 4444, 'dst': '10.0.0.10', 'dport': 22} => BLOCK (unsolicited inbound traffic)\n"
+          ]
+        }
+      ],
+      "source": [
+        "allowed_connections = set()\n",
+        "\n",
+        "def process(packet):\n",
+        "    direction = packet[\"direction\"]\n",
+        "    flow = (packet[\"src\"], packet[\"sport\"], packet[\"dst\"], packet[\"dport\"])\n",
+        "    reverse = (packet[\"dst\"], packet[\"dport\"], packet[\"src\"], packet[\"sport\"])\n",
+        "\n",
+        "    if direction == \"OUTBOUND\":\n",
+        "        allowed_connections.add(flow)\n",
+        "        return \"PERMIT (outbound connection recorded)\"\n",
+        "    if direction == \"INBOUND\" and reverse in allowed_connections:\n",
+        "        return \"PERMIT (return traffic for established connection)\"\n",
+        "    return \"BLOCK (unsolicited inbound traffic)\"\n",
+        "\n",
+        "packets = [\n",
+        "    {\"direction\":\"OUTBOUND\", \"src\":\"10.0.0.10\",\"sport\":50000,\"dst\":\"8.8.8.8\",\"dport\":53},\n",
+        "    {\"direction\":\"INBOUND\",  \"src\":\"8.8.8.8\",\"sport\":53,\"dst\":\"10.0.0.10\",\"dport\":50000},\n",
+        "    {\"direction\":\"INBOUND\",  \"src\":\"203.0.113.50\",\"sport\":4444,\"dst\":\"10.0.0.10\",\"dport\":22},\n",
+        "]\n",
+        "\n",
+        "for p in packets:\n",
+        "    print(p, \"=>\", process(p))\n"
+      ]
+    }
+  ]
+}
