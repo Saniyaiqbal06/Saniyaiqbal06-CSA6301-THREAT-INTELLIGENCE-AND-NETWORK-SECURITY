@@ -1,0 +1,68 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNJToPT99aEzlo5EV5BTXMI",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M32\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "OdpaRYozowt_",
+        "outputId": "a4c7c6cd-d11f-481b-f715-a24e2eb5a13e"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "VIOLATION: Backup service available -> Availability\n",
+            "VIOLATION: Access control -> Confidentiality\n",
+            "CIA principles violated: Availability, Confidentiality\n"
+          ]
+        }
+      ],
+      "source": [
+        "properties = [\n",
+        "    (\"Encrypted sensitive data\", \"Confidentiality\", True),\n",
+        "    (\"File integrity monitoring\", \"Integrity\", True),\n",
+        "    (\"Backup service available\", \"Availability\", False),\n",
+        "    (\"Access control\", \"Confidentiality\", False),\n",
+        "]\n",
+        "\n",
+        "violated = set()\n",
+        "for name, principle, status in properties:\n",
+        "    if status is False:\n",
+        "        violated.add(principle)\n",
+        "        print(f\"VIOLATION: {name} -> {principle}\")\n",
+        "\n",
+        "print(\"CIA principles violated:\", \", \".join(sorted(violated)) if violated else \"None\")\n"
+      ]
+    }
+  ]
+}
