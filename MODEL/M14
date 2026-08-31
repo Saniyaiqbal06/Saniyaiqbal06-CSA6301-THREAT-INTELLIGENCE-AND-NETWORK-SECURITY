@@ -1,0 +1,90 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyN9ZPmhH7ZhnozMZ0CA/0Z6",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M14\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "wUEEfCTUjC48",
+        "outputId": "c38d61e1-63fe-4bbb-db1c-f2e9df3fa343"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "SIEM ALERT: correlated suspicious activity from 10.0.0.9\n",
+            "\n",
+            "Normalized events:\n",
+            "{'src_ip': '10.0.0.9', 'event_type': 'deny', 'user': None, 'source': 'firewall', 'port': 22}\n",
+            "{'src_ip': '10.0.0.9', 'event_type': 'failed_login', 'user': 'admin', 'source': 'windows', 'port': None}\n",
+            "{'src_ip': '10.0.0.9', 'event_type': 'login_success', 'user': 'admin', 'source': 'vpn', 'port': None}\n"
+          ]
+        }
+      ],
+      "source": [
+        "from collections import defaultdict\n",
+        "\n",
+        "RAW = [\n",
+        "    {\"source\":\"firewall\",\"src\":\"10.0.0.9\",\"action\":\"deny\",\"port\":22},\n",
+        "    {\"source\":\"windows\",\"src\":\"10.0.0.9\",\"event\":\"failed_login\",\"user\":\"admin\"},\n",
+        "    {\"source\":\"vpn\",\"src\":\"10.0.0.9\",\"event\":\"login_success\",\"user\":\"admin\"},\n",
+        "]\n",
+        "\n",
+        "def normalize(e):\n",
+        "    return {\n",
+        "        \"src_ip\": e.get(\"src\"),\n",
+        "        \"event_type\": e.get(\"action\") or e.get(\"event\"),\n",
+        "        \"user\": e.get(\"user\"),\n",
+        "        \"source\": e.get(\"source\"),\n",
+        "        \"port\": e.get(\"port\"),\n",
+        "    }\n",
+        "\n",
+        "normalized = [normalize(e) for e in RAW]\n",
+        "\n",
+        "by_ip = defaultdict(list)\n",
+        "for e in normalized:\n",
+        "    by_ip[e[\"src_ip\"]].append(e)\n",
+        "\n",
+        "for ip, events in by_ip.items():\n",
+        "    types = {e[\"event_type\"] for e in events}\n",
+        "    if {\"deny\", \"failed_login\", \"login_success\"} <= types:\n",
+        "        print(\"SIEM ALERT: correlated suspicious activity from\", ip)\n",
+        "    else:\n",
+        "        print(\"No correlation alert for\", ip)\n",
+        "\n",
+        "print(\"\\nNormalized events:\")\n",
+        "for e in normalized:\n",
+        "    print(e)\n"
+      ]
+    }
+  ]
+}
