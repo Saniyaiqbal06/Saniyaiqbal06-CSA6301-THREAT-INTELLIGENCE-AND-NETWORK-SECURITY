@@ -1,0 +1,71 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyO4sXjADtF1kc72lyLGoFqR",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M29\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "6dymuvwgoC5A",
+        "outputId": "7e51142b-8f7d-4a44-b29f-f193c24719c7"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Security incident description: HI, IAM HERE\n",
+            "Recommended containment: Use scoped network isolation, preserve evidence, restrict affected accounts, and investigate before broad eradication.\n"
+          ]
+        }
+      ],
+      "source": [
+        "RULES = [\n",
+        "    (\"ransomware\", \"Isolate affected endpoints immediately; preserve evidence; disable compromised credentials.\"),\n",
+        "    (\"data exfiltration\", \"Block suspicious egress; isolate affected host; revoke exposed credentials.\"),\n",
+        "    (\"phishing\", \"Quarantine the message; reset compromised credentials; block malicious indicators.\"),\n",
+        "    (\"malware\", \"Isolate infected endpoint; preserve evidence; remove malicious persistence.\"),\n",
+        "    (\"ddos\", \"Activate DDoS protection; rate-limit traffic; coordinate with ISP/CDN.\"),\n",
+        "    (\"insider\", \"Restrict affected account access; preserve audit logs; involve authorized management.\"),\n",
+        "]\n",
+        "\n",
+        "def recommend(description):\n",
+        "    t = description.lower()\n",
+        "    for keyword, action in RULES:\n",
+        "        if keyword in t:\n",
+        "            return action\n",
+        "    return \"Use scoped network isolation, preserve evidence, restrict affected accounts, and investigate before broad eradication.\"\n",
+        "\n",
+        "description = input(\"Security incident description: \")\n",
+        "print(\"Recommended containment:\", recommend(description))\n"
+      ]
+    }
+  ]
+}
