@@ -1,1 +1,70 @@
-
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNKsVkTVbpfdnykfBheifHi",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M5\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ZDOP6wUi3Srl",
+        "outputId": "5652ddae-500c-46fe-c09e-92fc788e82fc"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Threat-intelligence report description: report the alert you say in an report\n",
+            "Intended audience: incident\n",
+            "Classification: Operational\n"
+          ]
+        }
+      ],
+      "source": [
+        "def classify(report, audience):\n",
+        "    text = (report + \" \" + audience).lower()\n",
+        "    operational = [\"soc\", \"analyst\", \"incident\", \"ioc\", \"alert\", \"immediately\", \"investigate\", \"triage\"]\n",
+        "    tactical = [\"threat actor\", \"ttp\", \"mitre\", \"technique\", \"detection\", \"hunt\", \"defender\"]\n",
+        "    strategic = [\"executive\", \"board\", \"ciso\", \"risk\", \"investment\", \"business impact\", \"leadership\"]\n",
+        "    scores = {\n",
+        "        \"Operational\": sum(x in text for x in operational),\n",
+        "        \"Tactical\": sum(x in text for x in tactical),\n",
+        "        \"Strategic\": sum(x in text for x in strategic),\n",
+        "    }\n",
+        "    return max(scores, key=scores.get)\n",
+        "\n",
+        "report = input(\"Threat-intelligence report description: \")\n",
+        "audience = input(\"Intended audience: \")\n",
+        "print(\"Classification:\", classify(report, audience))\n",
+        "\n"
+      ]
+    }
+  ]
+}
