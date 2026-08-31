@@ -1,0 +1,67 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNriREejp/HEuA55peU6vHC",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M20\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ZguuCINulgf4",
+        "outputId": "edf01432-8ac4-48a1-9faf-959e286d3e84"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Incident description: DDOS\n",
+            "Network threat category: DoS/DDoS\n"
+          ]
+        }
+      ],
+      "source": [
+        "CATEGORIES = {\n",
+        "    \"Phishing\": [\"phishing\", \"fake login\", \"credential\", \"malicious email\", \"attachment\", \"social engineering\"],\n",
+        "    \"DoS/DDoS\": [\"denial of service\", \"ddos\", \"dos\", \"flood\", \"overwhelming requests\", \"traffic spike\"],\n",
+        "    \"Malware\": [\"malware\", \"ransomware\", \"trojan\", \"worm\", \"virus\", \"payload\"],\n",
+        "    \"Man-in-the-Middle\": [\"mitm\", \"man-in-the-middle\", \"arp spoof\", \"dns spoof\", \"intercept\", \"eavesdrop\"],\n",
+        "}\n",
+        "\n",
+        "def classify(text):\n",
+        "    t = text.lower()\n",
+        "    scores = {c: sum(k in t for k in keys) for c, keys in CATEGORIES.items()}\n",
+        "    return max(scores, key=scores.get)\n",
+        "\n",
+        "description = input(\"Incident description: \")\n",
+        "print(\"Network threat category:\", classify(description))\n"
+      ]
+    }
+  ]
+}
