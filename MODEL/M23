@@ -1,0 +1,80 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOtnXQPnYPN8SLo//4LCx8x",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M23\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "wKM3qgAamO4P",
+        "outputId": "201920f6-c21d-4de1-a680-63569307a603"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "{'src_ip': '10.0.0.20', 'payload': 'normal web request'} => ALLOW\n",
+            "{'src_ip': '10.0.0.20', 'payload': 'evil_payload detected'} => BLOCK (IPS signature: MALWARE_TEST)\n",
+            "{'src_ip': '10.0.0.10', 'payload': 'evil_payload from trusted test source'} => ALLOW (trusted-source whitelist)\n"
+          ]
+        }
+      ],
+      "source": [
+        "TRUSTED_SOURCES = {\"10.0.0.10\"}\n",
+        "\n",
+        "SIGNATURES = {\n",
+        "    \"MALWARE_TEST\": \"evil_payload\",\n",
+        "    \"COMMAND_TEST\": \"cmd=/bin/sh\",\n",
+        "    \"SQL_TEST\": \"union select\",\n",
+        "}\n",
+        "\n",
+        "def inspect(packet):\n",
+        "    src = packet.get(\"src_ip\", \"\")\n",
+        "    payload = packet.get(\"payload\", \"\").lower()\n",
+        "    if src in TRUSTED_SOURCES:\n",
+        "        return \"ALLOW (trusted-source whitelist)\"\n",
+        "    for name, pattern in SIGNATURES.items():\n",
+        "        if pattern.lower() in payload:\n",
+        "            return f\"BLOCK (IPS signature: {name})\"\n",
+        "    return \"ALLOW\"\n",
+        "\n",
+        "packets = [\n",
+        "    {\"src_ip\":\"10.0.0.20\",\"payload\":\"normal web request\"},\n",
+        "    {\"src_ip\":\"10.0.0.20\",\"payload\":\"evil_payload detected\"},\n",
+        "    {\"src_ip\":\"10.0.0.10\",\"payload\":\"evil_payload from trusted test source\"},\n",
+        "]\n",
+        "\n",
+        "for p in packets:\n",
+        "    print(p, \"=>\", inspect(p))\n"
+      ]
+    }
+  ]
+}
