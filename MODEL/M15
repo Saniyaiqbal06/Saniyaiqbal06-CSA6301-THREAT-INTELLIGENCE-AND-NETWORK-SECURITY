@@ -1,0 +1,68 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPb4KewwfXAtcyiPRW6M8mE",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M15\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "jkI7W274jc74",
+        "outputId": "f511aeda-70d9-4d37-8484-d4acd286b8b0"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Incident case-study narrative: PHISHING\n",
+            "Likely root cause: phishing\n"
+          ]
+        }
+      ],
+      "source": [
+        "CATEGORIES = {\n",
+        "    \"phishing\": [\"phishing\", \"fake email\", \"credential link\", \"malicious attachment\", \"social engineering\"],\n",
+        "    \"unpatched vulnerability\": [\"unpatched\", \"missing patch\", \"vulnerable version\", \"cve\", \"security update\"],\n",
+        "    \"misconfiguration\": [\"misconfiguration\", \"wrong permission\", \"open storage\", \"exposed port\", \"default password\"],\n",
+        "    \"insider threat\": [\"insider\", \"employee\", \"contractor\", \"stole data\", \"intentional misuse\"],\n",
+        "    \"supply-chain compromise\": [\"supplier\", \"third-party\", \"dependency\", \"vendor\", \"software update compromised\"],\n",
+        "}\n",
+        "\n",
+        "def classify(text):\n",
+        "    t = text.lower()\n",
+        "    scores = {c: sum(k in t for k in keys) for c, keys in CATEGORIES.items()}\n",
+        "    return max(scores, key=scores.get)\n",
+        "\n",
+        "narrative = input(\"Incident case-study narrative: \")\n",
+        "print(\"Likely root cause:\", classify(narrative))\n"
+      ]
+    }
+  ]
+}
