@@ -1,0 +1,72 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNEzHfKbwCoU0NTk+2I8eOI",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M40\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "7PznCOwkqkj2",
+        "outputId": "ebf350a7-dffe-436c-8edd-56648df766ec"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Plain-English security task: WEB SECURITY\n",
+            "Recommended tool: Burp Suite\n"
+          ]
+        }
+      ],
+      "source": [
+        "TOOLS = {\n",
+        "    \"Wireshark\": [\"packet\", \"pcap\", \"network traffic\", \"protocol analysis\", \"sniff\"],\n",
+        "    \"Nmap\": [\"port scan\", \"open ports\", \"network discovery\", \"host discovery\"],\n",
+        "    \"Splunk\": [\"siem\", \"search logs\", \"correlation\", \"dashboard\", \"event analysis\"],\n",
+        "    \"Burp Suite\": [\"web application\", \"http\", \"proxy\", \"web security\", \"request\"],\n",
+        "    \"Nessus\": [\"vulnerability\", \"vulnerability assessment\", \"scan\", \"weakness\"],\n",
+        "    \"YARA\": [\"malware\", \"file signature\", \"pattern matching\", \"malware classification\"],\n",
+        "    \"Metasploit\": [\"penetration testing\", \"exploit validation\", \"exploit\", \"security testing\"],\n",
+        "    \"ELK Stack\": [\"log management\", \"elasticsearch\", \"kibana\", \"logstash\", \"log analytics\"],\n",
+        "}\n",
+        "\n",
+        "def recommend(task):\n",
+        "    t = task.lower()\n",
+        "    scores = {tool: sum(k in t for k in keys) for tool, keys in TOOLS.items()}\n",
+        "    best = max(scores, key=scores.get)\n",
+        "    return best if scores[best] else \"No strong match; describe the task more specifically.\"\n",
+        "\n",
+        "task = input(\"Plain-English security task: \")\n",
+        "print(\"Recommended tool:\", recommend(task))\n"
+      ]
+    }
+  ]
+}
