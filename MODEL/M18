@@ -1,0 +1,79 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPGuF20bRyp8j7Hh657NP7S",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M18\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "CLsZYs2eksbp",
+        "outputId": "5ed9f3d9-5b58-4846-c88e-4e1e425b15d0"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "File path to scan: \"C:\\Users\\WELCOME\\Pictures\\Screenshots\\Screenshot 2026-08-24 212149.png\"\n",
+            "Could not read file: [Errno 2] No such file or directory: '\"C:\\\\Users\\\\WELCOME\\\\Pictures\\\\Screenshots\\\\Screenshot 2026-08-24 212149.png\"'\n"
+          ]
+        }
+      ],
+      "source": [
+        "import hashlib\n",
+        "from pathlib import Path\n",
+        "\n",
+        "KNOWN_MALICIOUS = {\n",
+        "    # Example placeholder hashes. Replace with authorized threat-intelligence hashes.\n",
+        "    \"44d88612fea8a8f36de82e1278abb02f\": \"Example legacy MD5 value (not used for SHA-256)\",\n",
+        "    \"0000000000000000000000000000000000000000000000000000000000000000\": \"Example placeholder\",\n",
+        "}\n",
+        "\n",
+        "def sha256_file(path):\n",
+        "    h = hashlib.sha256()\n",
+        "    with open(path, \"rb\") as f:\n",
+        "        for chunk in iter(lambda: f.read(1024 * 1024), b\"\"):\n",
+        "            h.update(chunk)\n",
+        "    return h.hexdigest()\n",
+        "\n",
+        "path = input(\"File path to scan: \").strip()\n",
+        "try:\n",
+        "    digest = sha256_file(path)\n",
+        "    print(\"SHA-256:\", digest)\n",
+        "    if digest in KNOWN_MALICIOUS:\n",
+        "        print(\"MATCH: file hash is in the known-malicious database.\")\n",
+        "    else:\n",
+        "        print(\"NO MATCH: hash was not found in this local database.\")\n",
+        "except OSError as e:\n",
+        "    print(\"Could not read file:\", e)\n"
+      ]
+    }
+  ]
+}
