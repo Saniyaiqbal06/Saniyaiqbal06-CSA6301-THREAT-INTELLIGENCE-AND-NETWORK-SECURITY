@@ -1,0 +1,74 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNVXmpS8tCOyEMe4baw0fY2",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M30\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Pn5dPdJWoWc_",
+        "outputId": "fb2471a0-6bd6-453e-9e01-b92b35f20cff"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "SIEM CORRELATION ALERT: 198.51.100.7 admin had repeated Windows failures, firewall activity, and VPN success.\n"
+          ]
+        }
+      ],
+      "source": [
+        "from collections import defaultdict\n",
+        "\n",
+        "firewall = [{\"src\":\"198.51.100.7\",\"action\":\"ALLOW\",\"port\":443}]\n",
+        "windows = [\n",
+        "    {\"src\":\"198.51.100.7\",\"event\":\"FAILED_LOGIN\",\"user\":\"admin\"},\n",
+        "    {\"src\":\"198.51.100.7\",\"event\":\"FAILED_LOGIN\",\"user\":\"admin\"},\n",
+        "]\n",
+        "vpn = [{\"src\":\"198.51.100.7\",\"event\":\"VPN_SUCCESS\",\"user\":\"admin\"}]\n",
+        "\n",
+        "failed = defaultdict(int)\n",
+        "for e in windows:\n",
+        "    if e[\"event\"] == \"FAILED_LOGIN\":\n",
+        "        failed[(e[\"src\"], e[\"user\"])] += 1\n",
+        "\n",
+        "for e in vpn:\n",
+        "    key = (e[\"src\"], e[\"user\"])\n",
+        "    firewall_seen = any(f[\"src\"] == e[\"src\"] and f[\"action\"] == \"ALLOW\" for f in firewall)\n",
+        "    if failed[key] >= 2 and firewall_seen:\n",
+        "        print(\"SIEM CORRELATION ALERT:\", e[\"src\"], e[\"user\"],\n",
+        "              \"had repeated Windows failures, firewall activity, and VPN success.\")\n",
+        "    else:\n",
+        "        print(\"No correlated brute-force alert for\", key)\n"
+      ]
+    }
+  ]
+}
