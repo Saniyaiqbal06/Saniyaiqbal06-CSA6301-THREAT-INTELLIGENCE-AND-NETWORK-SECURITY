@@ -1,0 +1,69 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyP4JUv02B4S3gdZu4PT7mbk",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M33\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "g0aXSY3WpJ96",
+        "outputId": "33cd8dd8-f0e9-469b-a363-120391eb3986"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Incident-response action description: PREPARE\n",
+            "Lifecycle phase: Preparation\n"
+          ]
+        }
+      ],
+      "source": [
+        "PHASES = {\n",
+        "    \"Preparation\": [\"prepare\", \"playbook\", \"training\", \"backup\", \"readiness\"],\n",
+        "    \"Identification\": [\"detect\", \"alert\", \"identify\", \"investigate\", \"triage\"],\n",
+        "    \"Containment\": [\"isolate\", \"block\", \"contain\", \"quarantine\", \"disable account\"],\n",
+        "    \"Eradication\": [\"remove malware\", \"patch\", \"eradicate\", \"delete persistence\", \"clean\"],\n",
+        "    \"Recovery\": [\"restore\", \"recover\", \"return to service\", \"rebuild\", \"validate\"],\n",
+        "    \"Lessons Learned\": [\"lessons learned\", \"post-incident\", \"postmortem\", \"improvement\", \"review\"],\n",
+        "}\n",
+        "\n",
+        "def classify(action):\n",
+        "    t = action.lower()\n",
+        "    scores = {p: sum(k in t for k in keys) for p, keys in PHASES.items()}\n",
+        "    return max(scores, key=scores.get)\n",
+        "\n",
+        "action = input(\"Incident-response action description: \")\n",
+        "print(\"Lifecycle phase:\", classify(action))\n"
+      ]
+    }
+  ]
+}
