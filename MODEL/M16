@@ -1,0 +1,80 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNGv5I0XWg6us1c2eYYxzsH",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M16\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "VDNMNHJzjuBi",
+        "outputId": "70b38ad8-e5db-4daf-fe2f-e8cf2a68d126"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Defense-in-Depth simulation:\n",
+            "Firewall: bypassed\n",
+            "Network IDS/IPS: bypassed\n",
+            "Endpoint Protection: bypassed\n",
+            "Access Control: BLOCKED the attack\n",
+            "Protection result: Attack stopped by layered controls.\n"
+          ]
+        }
+      ],
+      "source": [
+        "def simulate(attack_success, controls):\n",
+        "    blocked_by = []\n",
+        "    for control, effectiveness in controls:\n",
+        "        if attack_success > effectiveness:\n",
+        "            print(f\"{control}: bypassed\")\n",
+        "            attack_success -= effectiveness\n",
+        "        else:\n",
+        "            print(f\"{control}: BLOCKED the attack\")\n",
+        "            blocked_by.append(control)\n",
+        "            return blocked_by\n",
+        "    return blocked_by\n",
+        "\n",
+        "controls = [\n",
+        "    (\"Firewall\", 0.20),\n",
+        "    (\"Network IDS/IPS\", 0.25),\n",
+        "    (\"Endpoint Protection\", 0.25),\n",
+        "    (\"Access Control\", 0.20),\n",
+        "    (\"Monitoring/Response\", 0.15),\n",
+        "]\n",
+        "\n",
+        "print(\"Defense-in-Depth simulation:\")\n",
+        "blocked = simulate(0.75, controls)\n",
+        "print(\"Protection result:\", \"Attack stopped by layered controls.\" if blocked else \"Attack passed all modeled layers.\")\n"
+      ]
+    }
+  ]
+}
