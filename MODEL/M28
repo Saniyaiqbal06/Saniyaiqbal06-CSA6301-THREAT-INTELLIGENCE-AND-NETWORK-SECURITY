@@ -1,0 +1,71 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOeWwQ7fX5ZuVXmqu8uBnNt",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M28\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "yXJ0XYient3c",
+        "outputId": "1e3b3e94-d9c3-46d9-c2d9-1ca6e1e437de"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Possible DoS source: 192.0.2.10 generated 6 requests\n"
+          ]
+        }
+      ],
+      "source": [
+        "from collections import Counter\n",
+        "from datetime import datetime\n",
+        "\n",
+        "LOGS = [\n",
+        "    \"2026-08-28T09:00:01 192.0.2.10 GET /\",\n",
+        "    \"2026-08-28T09:00:02 192.0.2.10 GET /login\",\n",
+        "    \"2026-08-28T09:00:03 192.0.2.10 GET /api\",\n",
+        "    \"2026-08-28T09:00:04 192.0.2.10 GET /\",\n",
+        "    \"2026-08-28T09:00:05 192.0.2.10 GET /admin\",\n",
+        "    \"2026-08-28T09:00:06 192.0.2.10 GET /data\",\n",
+        "    \"2026-08-28T09:00:07 192.0.2.20 GET /\",\n",
+        "]\n",
+        "\n",
+        "def detect(logs, threshold=5):\n",
+        "    counts = Counter(line.split()[1] for line in logs if len(line.split()) >= 2)\n",
+        "    return [(ip, n) for ip, n in counts.items() if n > threshold]\n",
+        "\n",
+        "for ip, count in detect(LOGS):\n",
+        "    print(f\"Possible DoS source: {ip} generated {count} requests\")\n"
+      ]
+    }
+  ]
+}
