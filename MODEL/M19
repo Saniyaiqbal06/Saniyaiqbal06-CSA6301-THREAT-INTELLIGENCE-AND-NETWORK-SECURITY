@@ -1,0 +1,76 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMNqBTIFHFSa4LzzIfPNpCc",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M19\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Fn8s7XTEk9rN",
+        "outputId": "2f9dfaad-50d5-47a5-c399-210bbc2e1151"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Search field [action]: user\n",
+            "Search value [login]: 5\n",
+            "Search results:\n",
+            "stats count BY field [user]: 2\n",
+            "Stats count by 2 : {'unknown': 5}\n"
+          ]
+        }
+      ],
+      "source": [
+        "from collections import Counter\n",
+        "\n",
+        "EVENTS = [\n",
+        "    {\"user\":\"alice\",\"action\":\"login\",\"status\":\"success\",\"src_ip\":\"10.0.0.1\"},\n",
+        "    {\"user\":\"bob\",\"action\":\"login\",\"status\":\"failed\",\"src_ip\":\"10.0.0.2\"},\n",
+        "    {\"user\":\"bob\",\"action\":\"login\",\"status\":\"failed\",\"src_ip\":\"10.0.0.2\"},\n",
+        "    {\"user\":\"alice\",\"action\":\"download\",\"status\":\"success\",\"src_ip\":\"10.0.0.1\"},\n",
+        "    {\"user\":\"carol\",\"action\":\"login\",\"status\":\"success\",\"src_ip\":\"10.0.0.3\"},\n",
+        "]\n",
+        "\n",
+        "field = input(\"Search field [action]: \").strip() or \"action\"\n",
+        "value = input(\"Search value [login]: \").strip() or \"login\"\n",
+        "matches = [e for e in EVENTS if str(e.get(field, \"\")).lower() == value.lower()]\n",
+        "print(\"Search results:\")\n",
+        "for e in matches:\n",
+        "    print(e)\n",
+        "\n",
+        "stats_field = input(\"stats count BY field [user]: \").strip() or \"user\"\n",
+        "counts = Counter(e.get(stats_field, \"unknown\") for e in EVENTS)\n",
+        "print(\"Stats count by\", stats_field, \":\", dict(counts))\n"
+      ]
+    }
+  ]
+}
