@@ -1,0 +1,65 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOVSDUG/7hJscyy9DP/ddfa",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M12\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "_0eVpbo_iNC_",
+        "outputId": "ed6abe64-5e00-4939-9724-7f06d3963caf"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "SOC alert description: ransomeware\n",
+            "Priority: P4\n"
+          ]
+        }
+      ],
+      "source": [
+        "def priority(alert):\n",
+        "    t = alert.lower()\n",
+        "    if any(x in t for x in [\"ransomware\", \"data exfiltration\", \"active breach\", \"domain admin\", \"critical server compromised\"]):\n",
+        "        return \"P1\"\n",
+        "    if any(x in t for x in [\"malware detected\", \"multiple failed logins\", \"privilege escalation\", \"suspicious powershell\"]):\n",
+        "        return \"P2\"\n",
+        "    if any(x in t for x in [\"single failed login\", \"port scan\", \"policy violation\", \"suspicious login\"]):\n",
+        "        return \"P3\"\n",
+        "    return \"P4\"\n",
+        "\n",
+        "alert = input(\"SOC alert description: \")\n",
+        "print(\"Priority:\", priority(alert))\n"
+      ]
+    }
+  ]
+}
