@@ -1,0 +1,68 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPWQ+MDKBiVR9V6wddZrbqI",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M36\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "nzobTyecpsjY",
+        "outputId": "d41891a1-2f3a-4f75-b74c-95394130fdfd"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "System/data description: EU RESIDENT\n",
+            "Most likely compliance standard: GDPR\n"
+          ]
+        }
+      ],
+      "source": [
+        "STANDARDS = {\n",
+        "    \"PCI-DSS\": [\"payment card\", \"cardholder\", \"credit card\", \"debit card\", \"card data\", \"merchant\"],\n",
+        "    \"HIPAA\": [\"patient\", \"health record\", \"protected health\", \"hospital\", \"medical\", \"healthcare\"],\n",
+        "    \"GDPR\": [\"personal data\", \"eu resident\", \"european\", \"data subject\", \"privacy\", \"consent\"],\n",
+        "    \"SOX\": [\"financial reporting\", \"public company\", \"audit controls\", \"financial records\", \"sox\"],\n",
+        "}\n",
+        "\n",
+        "def classify(text):\n",
+        "    t = text.lower()\n",
+        "    scores = {s: sum(k in t for k in keys) for s, keys in STANDARDS.items()}\n",
+        "    best = max(scores, key=scores.get)\n",
+        "    return best if scores[best] else \"No clear match\"\n",
+        "\n",
+        "description = input(\"System/data description: \")\n",
+        "print(\"Most likely compliance standard:\", classify(description))\n"
+      ]
+    }
+  ]
+}
