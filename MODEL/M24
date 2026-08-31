@@ -1,0 +1,89 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMkM+sPscMJ+lohuHEGIygH",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M24\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "9_wrMrngmmVH",
+        "outputId": "223c4b05-4272-48db-dc13-b48f18755a8f"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Baseline failures:\n",
+            "- endpoint_protection: required True, found False\n",
+            "- patch_compliance_percent: minimum 95, found 87\n"
+          ]
+        }
+      ],
+      "source": [
+        "BASELINE = {\n",
+        "    \"mfa\": True,\n",
+        "    \"endpoint_protection\": True,\n",
+        "    \"logging\": True,\n",
+        "    \"encrypted_storage\": True,\n",
+        "    \"backup\": True,\n",
+        "    \"patch_compliance_percent\": 95,\n",
+        "}\n",
+        "\n",
+        "CURRENT = {\n",
+        "    \"mfa\": True,\n",
+        "    \"endpoint_protection\": False,\n",
+        "    \"logging\": True,\n",
+        "    \"encrypted_storage\": True,\n",
+        "    \"backup\": True,\n",
+        "    \"patch_compliance_percent\": 87,\n",
+        "}\n",
+        "\n",
+        "def check(current, baseline):\n",
+        "    failures = []\n",
+        "    for key, minimum in baseline.items():\n",
+        "        value = current.get(key)\n",
+        "        if isinstance(minimum, bool):\n",
+        "            if value is not True:\n",
+        "                failures.append(f\"{key}: required {minimum}, found {value}\")\n",
+        "        elif value is None or value < minimum:\n",
+        "            failures.append(f\"{key}: minimum {minimum}, found {value}\")\n",
+        "    return failures\n",
+        "\n",
+        "failures = check(CURRENT, BASELINE)\n",
+        "print(\"Baseline failures:\")\n",
+        "for x in failures:\n",
+        "    print(\"-\", x)\n",
+        "if not failures:\n",
+        "    print(\"All controls meet the baseline.\")\n"
+      ]
+    }
+  ]
+}
