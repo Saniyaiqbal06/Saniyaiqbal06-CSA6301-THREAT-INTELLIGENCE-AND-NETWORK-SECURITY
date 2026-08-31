@@ -1,0 +1,62 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOWR3HJYMKhEagxZEOaKEWc",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M38\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "cVjqGPBnqMKV"
+      },
+      "outputs": [],
+      "source": [
+        "def risk_score(likelihood, impact):\n",
+        "    score = likelihood * impact\n",
+        "    if score <= 4:\n",
+        "        level = \"Low\"\n",
+        "    elif score <= 9:\n",
+        "        level = \"Medium\"\n",
+        "    elif score <= 16:\n",
+        "        level = \"High\"\n",
+        "    else:\n",
+        "        level = \"Critical\"\n",
+        "    return score, level\n",
+        "\n",
+        "try:\n",
+        "    likelihood = int(input(\"Likelihood (1-5): \"))\n",
+        "    impact = int(input(\"Impact (1-5): \"))\n",
+        "    if not 1 <= likelihood <= 5 or not 1 <= impact <= 5:\n",
+        "        raise ValueError\n",
+        "    score, level = risk_score(likelihood, impact)\n",
+        "    print(\"Risk score:\", score)\n",
+        "    print(\"Risk level:\", level)\n",
+        "except ValueError:\n",
+        "    print(\"Enter whole numbers from 1 to 5.\")\n"
+      ]
+    }
+  ]
+}
