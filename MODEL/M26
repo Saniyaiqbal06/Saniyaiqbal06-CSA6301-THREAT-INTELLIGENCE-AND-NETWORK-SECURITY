@@ -1,0 +1,88 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNUJIeVHE0mwuSCAuTiU9oR",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Saniyaiqbal06/Saniyaiqbal06-CSA6301-THREAT-INTELLIGENCE-AND-NETWORK-SECURITY/blob/main/MODEL/M26\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "X07YUrw_nQNn",
+        "outputId": "8d10fbd3-4f99-45b8-e12e-cc6dde69b8d9"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Enter simulated malware sample text: HI, IAM HERE\n",
+            "STATIC ANALYSIS\n",
+            "SHA-256: 065f51c81ae4776fa5d403ba8e69527a0dc8cc937ecbfbaa09b501d6c5eeb637\n",
+            "Suspicious API strings: None\n",
+            "\n",
+            "DYNAMIC ANALYSIS (simulated behavior log)\n",
+            "- Process started: sample.exe\n",
+            "- Network connection to 203.0.113.10:443\n",
+            "- CreateProcess: powershell.exe\n",
+            "- File modified: startup_config\n",
+            "Suspicious behavior indicators detected.\n"
+          ]
+        }
+      ],
+      "source": [
+        "import hashlib\n",
+        "\n",
+        "SUSPICIOUS_APIS = [\"CreateProcess\", \"VirtualAlloc\", \"WriteProcessMemory\",\n",
+        "                   \"WinExec\", \"URLDownloadToFile\", \"RegSetValue\"]\n",
+        "\n",
+        "BEHAVIOR_LOG = [\n",
+        "    \"Process started: sample.exe\",\n",
+        "    \"Network connection to 203.0.113.10:443\",\n",
+        "    \"CreateProcess: powershell.exe\",\n",
+        "    \"File modified: startup_config\",\n",
+        "]\n",
+        "\n",
+        "sample = input(\"Enter simulated malware sample text: \")\n",
+        "digest = hashlib.sha256(sample.encode()).hexdigest()\n",
+        "print(\"STATIC ANALYSIS\")\n",
+        "print(\"SHA-256:\", digest)\n",
+        "hits = [api for api in SUSPICIOUS_APIS if api.lower() in sample.lower()]\n",
+        "print(\"Suspicious API strings:\", hits or \"None\")\n",
+        "\n",
+        "print(\"\\nDYNAMIC ANALYSIS (simulated behavior log)\")\n",
+        "for line in BEHAVIOR_LOG:\n",
+        "    print(\"-\", line)\n",
+        "if any(x in \" \".join(BEHAVIOR_LOG).lower() for x in [\"network connection\", \"powershell\", \"startup\"]):\n",
+        "    print(\"Suspicious behavior indicators detected.\")\n",
+        "else:\n",
+        "    print(\"No modeled suspicious behavior detected.\")\n"
+      ]
+    }
+  ]
+}
